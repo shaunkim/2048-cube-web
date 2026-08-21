@@ -4,6 +4,7 @@ const { resolve } = require('node:path');
 const test = global.test ?? require('node:test');
 
 const workflowPath = resolve(__dirname, '../.github/workflows/deploy-pages.yml');
+const appConfig = require('../app.json');
 
 test('publishes the web export only when the repository is public', () => {
   assert.equal(existsSync(workflowPath), true, 'Pages workflow should exist');
@@ -23,4 +24,5 @@ test('publishes the web export only when the repository is public', () => {
   assert.match(workflow, /npm run build:web/);
   assert.match(workflow, /path: dist/);
   assert.match(workflow, /environment:\n      name: github-pages/m);
+  assert.equal(appConfig.expo.web.favicon, appConfig.expo.icon);
 });

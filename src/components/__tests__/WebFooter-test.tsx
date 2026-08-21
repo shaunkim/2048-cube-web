@@ -3,15 +3,19 @@ import { Linking } from 'react-native';
 
 import { DESTINATIONS, SOURCE_URL, WebFooter } from '../WebFooter';
 
-it('shows one GitHub link and two non-link store placeholders', () => {
+it('shows three favicon-only destinations with one live GitHub link', () => {
   render(<WebFooter />);
 
   expect(screen.getByRole('link', { name: 'GitHub repository' })).toBeTruthy();
   expect(screen.queryByRole('link', { name: 'App Store' })).toBeNull();
   expect(screen.queryByRole('link', { name: 'Google Play' })).toBeNull();
-  expect(screen.getByText('App Store')).toBeTruthy();
-  expect(screen.getByText('Google Play')).toBeTruthy();
-  expect(screen.getAllByText('Coming soon')).toHaveLength(2);
+  expect(screen.getByText('<>')).toBeTruthy();
+  expect(screen.getByText('')).toBeTruthy();
+  expect(screen.getByText('▶')).toBeTruthy();
+  expect(screen.queryByText('GitHub')).toBeNull();
+  expect(screen.queryByText('App Store')).toBeNull();
+  expect(screen.queryByText('Google Play')).toBeNull();
+  expect(screen.queryByText('Coming soon')).toBeNull();
 });
 
 it('opens only the live GitHub destination when pressed', () => {

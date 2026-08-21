@@ -30,7 +30,9 @@ export interface AppProps {
 export const GAME_OVER_TRANSITION_MS = 500;
 
 export function cubeWidthFor(windowWidth: number): number {
-  return Math.min(windowWidth - 24, 680);
+  return windowWidth >= 720
+    ? Math.min(windowWidth - 96, 1120)
+    : Math.min(windowWidth - 24, 680);
 }
 
 type Panel = 'game' | 'menu' | 'tutorial';
@@ -139,7 +141,7 @@ export default function App({ controllerDependencies }: AppProps = {}) {
             {...panHandlers}
             style={[
               styles.cubeContainer,
-              { width: cubeWidth, opacity: cubeOpacity },
+              { width: cubeWidth, maxHeight: windowWidth >= 720 ? '72%' : '62%', opacity: cubeOpacity },
             ]}
           >
             <CubeBoard

@@ -14,9 +14,14 @@ it('offers and dispatches all six named directions in two fixed rows', () => {
   screen.getAllByRole('button').forEach((button) => {
     expect(button).toHaveStyle({ width: 56 });
   });
-  ['↖ Q', '↑ W', 'E ↗', '↙ A', '↓ S', 'D ↘'].forEach((label) => {
+  ['Q', '↑ W', 'E', 'A', '↓ S', 'D'].forEach((label) => {
     expect(screen.getByText(label).props.numberOfLines).toBe(1);
   });
+  expect(screen.getAllByTestId('diagonal-direction-arrow')).toHaveLength(4);
+  expect(screen.queryByText('↖ Q')).toBeNull();
+  expect(screen.queryByText('E ↗')).toBeNull();
+  expect(screen.queryByText('↙ A')).toBeNull();
+  expect(screen.queryByText('D ↘')).toBeNull();
   expect(onDirection).toHaveBeenNthCalledWith(1, 'upLeft');
   expect(onDirection).toHaveBeenNthCalledWith(2, 'downRight');
 });

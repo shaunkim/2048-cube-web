@@ -27,14 +27,12 @@ export const DESTINATIONS = {
   },
   appStore: {
     label: 'App Store',
-    mark: 'A',
-    status: 'Coming soon',
+    mark: '',
     url: null,
   },
   googlePlay: {
     label: 'Google Play',
     mark: '▶',
-    status: 'Coming soon',
     url: null,
   },
 } as const satisfies FooterDestinations;
@@ -59,8 +57,6 @@ function DestinationBadge({ destination }: { readonly destination: FooterDestina
   const url = destination.url;
   const badgeContents = <>
     <Text style={styles.mark}>{destination.mark}</Text>
-    <Text style={styles.label}>{destination.label}</Text>
-    {destination.status ? <Text style={styles.status}>{destination.status}</Text> : null}
   </>;
 
   if (url) {
@@ -77,16 +73,14 @@ function DestinationBadge({ destination }: { readonly destination: FooterDestina
   }
 
   return (
-    <View accessible accessibilityLabel={`${destination.label} — ${destination.status ?? 'Coming soon'}`} style={styles.badge}>
+    <View accessible accessibilityLabel={`${destination.label} — Coming soon`} style={styles.badge}>
       {badgeContents}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  footer: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center', paddingBottom: 12, paddingHorizontal: 16 },
-  badge: { alignItems: 'center', backgroundColor: gameTheme.emptyCell, borderColor: gameTheme.grid, borderRadius: 4, borderWidth: 2, flexDirection: 'row', gap: 5, minHeight: 34, paddingHorizontal: 8 },
-  mark: { color: gameTheme.ink, fontFamily: gameTheme.fonts.bold, fontSize: 12, letterSpacing: -1 },
-  label: { color: gameTheme.ink, fontFamily: gameTheme.fonts.medium, fontSize: 12 },
-  status: { color: gameTheme.mutedInk, fontFamily: gameTheme.fonts.regular, fontSize: 10 },
+  footer: { alignItems: 'center', flexDirection: 'row', gap: 10, justifyContent: 'center', paddingBottom: 12, paddingHorizontal: 16 },
+  badge: { alignItems: 'center', backgroundColor: gameTheme.emptyCell, borderColor: gameTheme.grid, borderRadius: 6, borderWidth: 2, height: 42, justifyContent: 'center', width: 42 },
+  mark: { color: gameTheme.ink, fontFamily: gameTheme.fonts.bold, fontSize: 18, letterSpacing: -1 },
 });
