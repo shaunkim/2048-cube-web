@@ -32,7 +32,7 @@ export const GAME_OVER_TRANSITION_MS = 500;
 export function cubeWidthFor(windowWidth: number): number {
   return windowWidth >= 720
     ? Math.min(windowWidth - 96, 1120)
-    : Math.min(windowWidth - 24, 680);
+    : Math.min(windowWidth + 48, 680);
 }
 
 type Panel = 'game' | 'menu' | 'tutorial';
@@ -46,6 +46,7 @@ export default function App({ controllerDependencies }: AppProps = {}) {
   const controller = useGameController(controllerDependencies);
   const { width: windowWidth } = useWindowDimensions();
   const cubeWidth = cubeWidthFor(windowWidth);
+  const isPhoneLayout = windowWidth < 720;
   const cubeOpacity = useRef(new Animated.Value(1)).current;
   const gameOverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [panel, setPanel] = useState<Panel>('game');
@@ -141,7 +142,8 @@ export default function App({ controllerDependencies }: AppProps = {}) {
             {...panHandlers}
             style={[
               styles.cubeContainer,
-              { width: cubeWidth, maxHeight: windowWidth >= 720 ? '72%' : '62%', opacity: cubeOpacity },
+              isPhoneLayout && styles.phoneCubeContainer,
+              { width: cubeWidth, maxHeight: '72%', opacity: cubeOpacity },
             ]}
           >
             <CubeBoard
@@ -153,9 +155,10 @@ export default function App({ controllerDependencies }: AppProps = {}) {
           <DirectionPad
             onDirection={controller.move}
             disabled={!controller.hydrated || inputLocked}
+            compact={isPhoneLayout}
           />
         </View>
-          <WebFooter />
+          <WebFooter compact={isPhoneLayout} />
           <GameOverlay celebration={controller.celebration} />
         <MenuSheet
           visible={panel === 'menu'}
@@ -205,5 +208,8 @@ const styles = StyleSheet.create({
   cubeContainer: {
     aspectRatio: 520 / 450,
     maxHeight: '62%',
+  },
+  phoneCubeContainer: {
+    marginTop: 12,
   },
 });

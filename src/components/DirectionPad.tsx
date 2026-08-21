@@ -24,14 +24,16 @@ const DIRECTION_BUTTONS: readonly DirectionButton[] = [
 export function DirectionPad({
   onDirection,
   disabled,
+  compact = false,
 }: {
   readonly onDirection: (direction: GlobalDirection) => void;
   readonly disabled: boolean;
+  readonly compact?: boolean;
 }) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, compact && styles.compactContainer]}>
       {[1, 2].map((row) => (
-        <View key={row} testID="direction-row" style={styles.row}>
+        <View key={row} testID="direction-row" style={[styles.row, compact && styles.compactRow]}>
           {DIRECTION_BUTTONS.filter((button) => button.row === row).map((button) => (
             <Pressable
               key={button.direction}
@@ -39,7 +41,7 @@ export function DirectionPad({
               accessibilityLabel={`Move ${button.label}`}
               disabled={disabled}
               onPress={() => onDirection(button.direction)}
-              style={styles.button}
+              style={[styles.button, compact && styles.compactButton]}
             >
               {button.diagonal ? <DiagonalArrow direction={button.direction} /> : null}
               <Text numberOfLines={1} style={styles.label}>{button.visibleLabel}</Text>
@@ -74,9 +76,15 @@ const styles = StyleSheet.create({
   container: {
     gap: 8,
   },
+  compactContainer: {
+    gap: 2,
+  },
   row: {
     flexDirection: 'row',
     gap: 8,
+  },
+  compactRow: {
+    gap: 4,
   },
   button: {
     alignItems: 'center',
@@ -86,6 +94,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     width: 56,
+  },
+  compactButton: {
+    paddingVertical: 6,
   },
   label: {
     color: gameTheme.ink,
