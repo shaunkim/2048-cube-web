@@ -1,0 +1,32 @@
+# Dependencies, Expo state, and web output
+node_modules/
+.expo/
+expo-env.d.ts
+dist/
+web-build/
+
+# Logs
+coverage/
+*.log
+logs/
+
+# Local configuration and credentials
+.env*
+!.env.example
+*.p8
+*.p12
+*.mobileprovision
+*.keystore
+
+# Platform and editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Native build artifacts that must never enter this web-only project
+ios/
+android/
+Pods/
+DerivedData/
+*.xcworkspace/
+*.xcodeproj/

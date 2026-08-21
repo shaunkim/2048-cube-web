@@ -1,0 +1,27 @@
+name: Bug report
+description: Report a browser or gameplay problem.
+title: "[Bug]: "
+body:
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      description: Include browser version, operating system, and device if relevant.
+      placeholder: "Chrome 130 on macOS 15"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Tell us the moves or actions that trigger the problem.
+      placeholder: "1. Open the game\n2. Press ...\n3. See ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior
+      placeholder: "Expected ...; instead ..."
+    validations:
+      required: true

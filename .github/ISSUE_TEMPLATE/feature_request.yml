@@ -1,0 +1,18 @@
+name: Feature request
+description: Suggest a gameplay or quality-of-life improvement.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would this improve?
+      description: Describe the gameplay need or frustration.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed idea
+      description: Explain the feature and how it should work.
+    validations:
+      required: true
