@@ -77,6 +77,8 @@ Please report browser problems or suggest gameplay ideas through [GitHub Issues]
 
 Clear Sans is bundled under the Apache License 2.0; its license is included at [assets/ClearSans-LICENSE.txt](assets/ClearSans-LICENSE.txt).
 
+This project was built with help from Codex.
+
 ## Why I Built This
 
-I built 2048³ to explore how a familiar puzzle changes when its moves are shared across multiple faces, while keeping the game approachable in a browser.
+I am an aerospace engineer, and extending two-dimensional data into three dimensions is part of my work as a CFD engineer. The idea for 2048³ came to me when I first played 2048, but I did not know how to program it into reality. As a small side project, AI-assisted coding finally gave me a way to build and share it.
