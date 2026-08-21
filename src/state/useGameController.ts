@@ -73,7 +73,7 @@ export function useGameController(
       random: dependencies?.random ?? mathRandomSource,
       ids: dependencies?.ids ?? monotonicIdSource,
       store: dependencies?.store ?? platformStore,
-      animationMs: dependencies?.animationMs ?? 180,
+      animationMs: dependencies?.animationMs ?? 100,
     }),
   );
 
