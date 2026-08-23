@@ -32,6 +32,8 @@ Every move targets two faces and applies the following local directions:
 
 Each changed face receives its own new tile. A face with no legal moves becomes frozen: it no longer moves or receives new tiles, while the other faces remain playable. The run ends only when all three faces are frozen.
 
+![Preview](https://github.com/shaunkim/2048-cube-web/blob/main/assets/2048cube_preview.webp)
+
 Score gains use a multiplier based on completed faces: ×1 before any face reaches 2048, then ×2, ×4, and ×8 as one, two, and three faces have completed the goal.
 
 ## Controls
