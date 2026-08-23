@@ -2,10 +2,8 @@
 <img src="assets/favicon.png" alt="favion" width="150" align="left" />
 <br clear="left" />
 
-2048³ is a browser game that reimagines 2048 on three visible faces of a cube. Combine matching tiles, complete every face, and keep playing for a higher score.
+2048³ is a browser game that reimagines 2048 on three visible faces of a cube. Combine matching tiles, complete every face, and keep playing for a higher score. Each face is an independent 4×4 board. A global move affects two faces at once, but tiles never cross from one face to another.
 
-## 2048³
-Each face is an independent 4×4 board. A global move affects two faces at once, but tiles never cross from one face to another.
 
 ## Play Online
 
