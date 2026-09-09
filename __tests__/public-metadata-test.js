@@ -33,7 +33,7 @@ test('publishes complete project, licensing, and attribution metadata', () => {
   for (const value of [
     'https://shaunkim.github.io/2048-cube-web/',
     'https://github.com/shaunkim/2048-cube-web',
-    'App Store — Coming soon',
+    'https://apps.apple.com/us/app/2048/id6803536487',
     'Google Play — Coming soon',
     'https://github.com/shaunkim/2048-cube-web/issues',
     'npm ci',

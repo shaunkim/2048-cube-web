@@ -3,11 +3,11 @@ import { Linking } from 'react-native';
 
 import { DESTINATIONS, SOURCE_URL, WebFooter } from '../WebFooter';
 
-it('shows three favicon-only destinations with one live GitHub link', () => {
+it('shows three favicon-only destinations with live GitHub and App Store links', () => {
   render(<WebFooter />);
 
   expect(screen.getByRole('link', { name: 'GitHub repository' })).toBeTruthy();
-  expect(screen.queryByRole('link', { name: 'App Store' })).toBeNull();
+  expect(screen.getByRole('link', { name: 'App Store' })).toBeTruthy();
   expect(screen.queryByRole('link', { name: 'Google Play' })).toBeNull();
   expect(screen.getByText('<>')).toBeTruthy();
   expect(screen.getByText('')).toBeTruthy();
@@ -18,15 +18,17 @@ it('shows three favicon-only destinations with one live GitHub link', () => {
   expect(screen.queryByText('Coming soon')).toBeNull();
 });
 
-it('opens only the live GitHub destination when pressed', () => {
+it('opens the live GitHub and App Store destinations when pressed', () => {
   const openUrl = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
 
   render(<WebFooter />);
 
   fireEvent.press(screen.getByRole('link', { name: 'GitHub repository' }));
+  fireEvent.press(screen.getByRole('link', { name: 'App Store' }));
 
-  expect(openUrl).toHaveBeenCalledTimes(1);
+  expect(openUrl).toHaveBeenCalledTimes(2);
   expect(openUrl).toHaveBeenCalledWith(SOURCE_URL);
+  expect(openUrl).toHaveBeenCalledWith('https://apps.apple.com/us/app/2048/id6803536487');
   openUrl.mockRestore();
 });
 

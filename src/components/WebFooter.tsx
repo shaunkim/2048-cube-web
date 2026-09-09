@@ -17,6 +17,7 @@ export type FooterDestinations = Readonly<{
 }>;
 
 export const SOURCE_URL = 'https://github.com/shaunkim/2048-cube-web';
+export const APP_STORE_URL = 'https://apps.apple.com/us/app/2048/id6803536487';
 
 export const DESTINATIONS = {
   github: {
@@ -28,7 +29,7 @@ export const DESTINATIONS = {
   appStore: {
     label: 'App Store',
     mark: '',
-    url: null,
+    url: APP_STORE_URL,
   },
   googlePlay: {
     label: 'Google Play',
