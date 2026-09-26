@@ -11,9 +11,6 @@
       "output": "single",
       "favicon": "./assets/icon.png"
     },
-    "experiments": {
-      "baseUrl": "/2048-cube-web"
-    },
     "plugins": [
       "expo-font",
       "expo-asset"
