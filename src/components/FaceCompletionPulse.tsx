@@ -3,11 +3,7 @@ import { Animated } from 'react-native';
 import { G, Path, Text as SvgText } from 'react-native-svg';
 
 import type { BoardState, FaceId } from '../game/model';
-import {
-  cellCenter,
-  roundedPolygonPath,
-  tilePolygon,
-} from '../geometry/cubeGeometry';
+import { cellCenter, roundedPolygonPath, tilePolygon } from '../geometry/cubeGeometry';
 import { gameTheme, tileStyle } from '../theme/gameTheme';
 
 const AnimatedGroup = Animated.createAnimatedComponent(G);

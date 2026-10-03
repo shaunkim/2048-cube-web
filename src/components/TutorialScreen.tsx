@@ -1,12 +1,5 @@
 import { useRef } from 'react';
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-  type GestureResponderEvent,
-} from 'react-native';
+import { Modal, Pressable, StyleSheet, Text, View, type GestureResponderEvent } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { G, Line, Polygon, Rect, Text as SvgText } from 'react-native-svg';
 
@@ -74,7 +67,15 @@ function Arrow({ x1, y1, x2, y2, color, label, width = 5 }: ArrowProps) {
 
   return (
     <G accessible={Boolean(label)} accessibilityLabel={label}>
-      <Line x1={x1} y1={y1} x2={baseX} y2={baseY} stroke={color} strokeWidth={width} strokeLinecap="round" />
+      <Line
+        x1={x1}
+        y1={y1}
+        x2={baseX}
+        y2={baseY}
+        stroke={color}
+        strokeWidth={width}
+        strokeLinecap="round"
+      />
       <Polygon points={points} fill={color} />
     </G>
   );
@@ -105,13 +106,31 @@ function CubeBase({
   readonly colorAll?: boolean;
   readonly highlighted?: readonly TutorialFace[];
 }) {
-  const opacity = (face: TutorialFace) => highlighted.includes(face) ? 1 : 0.3;
+  const opacity = (face: TutorialFace) => (highlighted.includes(face) ? 1 : 0.3);
 
   return (
     <G>
-      <Polygon points={cubeTop} fill={colorAll ? '#EDC53F' : gameTheme.faces.top} opacity={opacity('top')} stroke={gameTheme.grid} strokeWidth={2} />
-      <Polygon points={cubeLeft} fill={colorAll ? '#F2B179' : gameTheme.faces.left} opacity={opacity('left')} stroke={gameTheme.grid} strokeWidth={2} />
-      <Polygon points={cubeRight} fill={colorAll ? '#F59563' : gameTheme.faces.right} opacity={opacity('right')} stroke={gameTheme.grid} strokeWidth={2} />
+      <Polygon
+        points={cubeTop}
+        fill={colorAll ? '#EDC53F' : gameTheme.faces.top}
+        opacity={opacity('top')}
+        stroke={gameTheme.grid}
+        strokeWidth={2}
+      />
+      <Polygon
+        points={cubeLeft}
+        fill={colorAll ? '#F2B179' : gameTheme.faces.left}
+        opacity={opacity('left')}
+        stroke={gameTheme.grid}
+        strokeWidth={2}
+      />
+      <Polygon
+        points={cubeRight}
+        fill={colorAll ? '#F59563' : gameTheme.faces.right}
+        opacity={opacity('right')}
+        stroke={gameTheme.grid}
+        strokeWidth={2}
+      />
     </G>
   );
 }
@@ -122,23 +141,65 @@ function FaceAxes({ axis }: { readonly axis: DirectionAxis }) {
   if (axis === 'up-down') {
     return (
       <>
-        <Axis label="White up and down arrows on left face" testID="tutorial-axis-up-down-left" x1={60} y1={136} x2={60} y2={180} />
-        <Axis label="White up and down arrows on right face" testID="tutorial-axis-up-down-right" x1={180} y1={136} x2={180} y2={180} />
+        <Axis
+          label="White up and down arrows on left face"
+          testID="tutorial-axis-up-down-left"
+          x1={60}
+          y1={136}
+          x2={60}
+          y2={180}
+        />
+        <Axis
+          label="White up and down arrows on right face"
+          testID="tutorial-axis-up-down-right"
+          x1={180}
+          y1={136}
+          x2={180}
+          y2={180}
+        />
       </>
     );
   }
   if (axis === 'up-left') {
     return (
       <>
-        <Axis label="White up-left and down-right arrows on top face" testID="tutorial-axis-up-left-top" x1={78} y1={78} x2={120} y2={105} />
-        <Axis label="White up-left and down-right arrows on left face" testID="tutorial-axis-up-left-left" x1={48} y1={148} x2={90} y2={170} />
+        <Axis
+          label="White up-left and down-right arrows on top face"
+          testID="tutorial-axis-up-left-top"
+          x1={78}
+          y1={78}
+          x2={120}
+          y2={105}
+        />
+        <Axis
+          label="White up-left and down-right arrows on left face"
+          testID="tutorial-axis-up-left-left"
+          x1={48}
+          y1={148}
+          x2={90}
+          y2={170}
+        />
       </>
     );
   }
   return (
     <>
-      <Axis label="White up-right and down-left arrows on top face" testID="tutorial-axis-up-right-top" x1={120} y1={105} x2={162} y2={78} />
-      <Axis label="White up-right and down-left arrows on right face" testID="tutorial-axis-up-right-right" x1={150} y1={170} x2={192} y2={148} />
+      <Axis
+        label="White up-right and down-left arrows on top face"
+        testID="tutorial-axis-up-right-top"
+        x1={120}
+        y1={105}
+        x2={162}
+        y2={78}
+      />
+      <Axis
+        label="White up-right and down-left arrows on right face"
+        testID="tutorial-axis-up-right-right"
+        x1={150}
+        y1={170}
+        x2={192}
+        y2={148}
+      />
     </>
   );
 }
@@ -204,10 +265,22 @@ function TutorialGraphic({ page }: { readonly page: number }) {
           <Rect x={38} y={136} width={62} height={48} rx={7} fill="#EEE4DA" />
           <Arrow x1={69} y1={128} x2={69} y2={92} color={gameTheme.action} width={4} />
           <Rect x={38} y={35} width={62} height={48} rx={7} fill="#EDE0C8" />
-          <G fill={gameTheme.ink} fontFamily={gameTheme.fonts.bold} fontSize={22} fontWeight="700" textAnchor="middle">
-            <SvgText x={69} y={221}>2</SvgText>
-            <SvgText x={69} y={167}>2</SvgText>
-            <SvgText x={69} y={67}>4</SvgText>
+          <G
+            fill={gameTheme.ink}
+            fontFamily={gameTheme.fonts.bold}
+            fontSize={22}
+            fontWeight="700"
+            textAnchor="middle"
+          >
+            <SvgText x={69} y={221}>
+              2
+            </SvgText>
+            <SvgText x={69} y={167}>
+              2
+            </SvgText>
+            <SvgText x={69} y={67}>
+              4
+            </SvgText>
           </G>
         </G>
         <G accessible accessibilityLabel="Four plus four merges upward into eight">
@@ -215,10 +288,22 @@ function TutorialGraphic({ page }: { readonly page: number }) {
           <Rect x={140} y={136} width={62} height={48} rx={7} fill="#EDE0C8" />
           <Arrow x1={171} y1={128} x2={171} y2={92} color={gameTheme.action} width={4} />
           <Rect x={140} y={35} width={62} height={48} rx={7} fill="#F2B179" />
-          <G fill={gameTheme.ink} fontFamily={gameTheme.fonts.bold} fontSize={22} fontWeight="700" textAnchor="middle">
-            <SvgText x={171} y={221}>4</SvgText>
-            <SvgText x={171} y={167}>4</SvgText>
-            <SvgText x={171} y={67}>8</SvgText>
+          <G
+            fill={gameTheme.ink}
+            fontFamily={gameTheme.fonts.bold}
+            fontSize={22}
+            fontWeight="700"
+            textAnchor="middle"
+          >
+            <SvgText x={171} y={221}>
+              4
+            </SvgText>
+            <SvgText x={171} y={167}>
+              4
+            </SvgText>
+            <SvgText x={171} y={67}>
+              8
+            </SvgText>
           </G>
         </G>
       </Svg>
@@ -227,24 +312,55 @@ function TutorialGraphic({ page }: { readonly page: number }) {
   return (
     <Svg testID="tutorial-graphic-goal" viewBox="0 0 240 270" width="100%" height="100%">
       <CubeBase colorAll />
-      <G fill={gameTheme.lightText} fontFamily={gameTheme.fonts.bold} fontSize={20} fontWeight="800" textAnchor="middle">
-        <SvgText x={120} y={99}>2048</SvgText>
-        <SvgText x={76} y={166}>2048</SvgText>
-        <SvgText x={164} y={166}>2048</SvgText>
+      <G
+        fill={gameTheme.lightText}
+        fontFamily={gameTheme.fonts.bold}
+        fontSize={20}
+        fontWeight="800"
+        textAnchor="middle"
+      >
+        <SvgText x={120} y={99}>
+          2048
+        </SvgText>
+        <SvgText x={76} y={166}>
+          2048
+        </SvgText>
+        <SvgText x={164} y={166}>
+          2048
+        </SvgText>
       </G>
     </Svg>
   );
 }
 
-function TutorialButton({ label, onPress, primary = false }: { readonly label: string; readonly onPress: () => void; readonly primary?: boolean }) {
+function TutorialButton({
+  label,
+  onPress,
+  primary = false,
+}: {
+  readonly label: string;
+  readonly onPress: () => void;
+  readonly primary?: boolean;
+}) {
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={[styles.navButton, primary && styles.primaryButton]}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      style={[styles.navButton, primary && styles.primaryButton]}
+    >
       <Text style={styles.navText}>{label.toUpperCase()}</Text>
     </Pressable>
   );
 }
 
-export function TutorialScreen({ visible, page, onPageChange, onCloseToMenu, onPlay }: TutorialScreenProps) {
+export function TutorialScreen({
+  visible,
+  page,
+  onPageChange,
+  onCloseToMenu,
+  onPlay,
+}: TutorialScreenProps) {
   const touchStart = useRef<Readonly<{ x: number; y: number }> | null>(null);
   if (!visible) return null;
   const safePage = Math.max(0, Math.min(PAGES.length - 1, page));
@@ -275,22 +391,37 @@ export function TutorialScreen({ visible, page, onPageChange, onCloseToMenu, onP
           style={styles.content}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          onTouchCancel={() => { touchStart.current = null; }}
+          onTouchCancel={() => {
+            touchStart.current = null;
+          }}
         >
           <Text style={styles.heading}>{content.heading}</Text>
           <Text style={styles.body}>{content.body}</Text>
-          <View style={styles.graphic}><TutorialGraphic page={safePage} /></View>
-          <View accessibilityLabel={`Page ${safePage + 1} of ${PAGES.length}`} style={styles.indicators}>
+          <View style={styles.graphic}>
+            <TutorialGraphic page={safePage} />
+          </View>
+          <View
+            accessibilityLabel={`Page ${safePage + 1} of ${PAGES.length}`}
+            style={styles.indicators}
+          >
             {PAGES.map((_, index) => (
-              <View key={index} testID={`tutorial-page-indicator-${index + 1}`} style={[styles.indicator, index === safePage && styles.activeIndicator]} />
+              <View
+                key={index}
+                testID={`tutorial-page-indicator-${index + 1}`}
+                style={[styles.indicator, index === safePage && styles.activeIndicator]}
+              />
             ))}
           </View>
           <View style={styles.navigation}>
             <TutorialButton label="Menu" onPress={onCloseToMenu} />
-            {safePage > 0 && <TutorialButton label="Back" onPress={() => onPageChange(safePage - 1)} />}
-            {safePage < PAGES.length - 1
-              ? <TutorialButton label="Next" onPress={() => onPageChange(safePage + 1)} primary />
-              : <TutorialButton label="Let's Play" onPress={onPlay} primary />}
+            {safePage > 0 && (
+              <TutorialButton label="Back" onPress={() => onPageChange(safePage - 1)} />
+            )}
+            {safePage < PAGES.length - 1 ? (
+              <TutorialButton label="Next" onPress={() => onPageChange(safePage + 1)} primary />
+            ) : (
+              <TutorialButton label="Let's Play" onPress={onPlay} primary />
+            )}
           </View>
         </View>
       </SafeAreaView>
@@ -301,14 +432,55 @@ export function TutorialScreen({ visible, page, onPageChange, onCloseToMenu, onP
 const styles = StyleSheet.create({
   screen: { backgroundColor: gameTheme.background, flex: 1 },
   content: { alignItems: 'center', flex: 1, paddingHorizontal: 24, paddingTop: 34 },
-  heading: { color: gameTheme.action, fontFamily: gameTheme.fonts.bold, fontSize: 25, fontWeight: '800', textAlign: 'center' },
-  body: { color: gameTheme.ink, fontFamily: gameTheme.fonts.medium, fontSize: 17, lineHeight: 24, marginTop: 12, maxWidth: 410, textAlign: 'center' },
-  graphic: { aspectRatio: 240 / 270, flex: 1, maxHeight: 390, maxWidth: 350, minHeight: 240, width: '100%' },
+  heading: {
+    color: gameTheme.action,
+    fontFamily: gameTheme.fonts.bold,
+    fontSize: 25,
+    fontWeight: '800',
+    textAlign: 'center',
+  },
+  body: {
+    color: gameTheme.ink,
+    fontFamily: gameTheme.fonts.medium,
+    fontSize: 17,
+    lineHeight: 24,
+    marginTop: 12,
+    maxWidth: 410,
+    textAlign: 'center',
+  },
+  graphic: {
+    aspectRatio: 240 / 270,
+    flex: 1,
+    maxHeight: 390,
+    maxWidth: 350,
+    minHeight: 240,
+    width: '100%',
+  },
   indicators: { flexDirection: 'row', gap: 10, marginBottom: 22 },
   indicator: { backgroundColor: '#B9B0A5', borderRadius: 6, height: 12, width: 12 },
   activeIndicator: { backgroundColor: gameTheme.action },
-  navigation: { flexDirection: 'row', gap: 10, justifyContent: 'center', paddingBottom: 18, width: '100%' },
-  navButton: { alignItems: 'center', backgroundColor: gameTheme.board, borderRadius: 8, flex: 1, justifyContent: 'center', maxWidth: 150, minHeight: 52, paddingHorizontal: 10 },
+  navigation: {
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'center',
+    paddingBottom: 18,
+    width: '100%',
+  },
+  navButton: {
+    alignItems: 'center',
+    backgroundColor: gameTheme.board,
+    borderRadius: 8,
+    flex: 1,
+    justifyContent: 'center',
+    maxWidth: 150,
+    minHeight: 52,
+    paddingHorizontal: 10,
+  },
   primaryButton: { backgroundColor: gameTheme.action },
-  navText: { color: gameTheme.lightText, fontFamily: gameTheme.fonts.bold, fontSize: 14, fontWeight: '800' },
+  navText: {
+    color: gameTheme.lightText,
+    fontFamily: gameTheme.fonts.bold,
+    fontSize: 14,
+    fontWeight: '800',
+  },
 });

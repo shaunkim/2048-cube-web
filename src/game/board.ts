@@ -86,7 +86,10 @@ export function applyBoardMove(
   let scoreDelta = 0;
 
   for (const line of linesFor(direction)) {
-    const result = collapseLine(line.map((index) => board.cells[index] ?? null), ids);
+    const result = collapseLine(
+      line.map((index) => board.cells[index] ?? null),
+      ids,
+    );
     changed ||= result.changed;
     scoreDelta += result.scoreDelta;
 

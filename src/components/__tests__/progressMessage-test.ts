@@ -4,14 +4,19 @@ import { progressMessage } from '../progressMessage';
 function board(completed2048: boolean, maximum = 0): BoardState {
   return {
     cells: Array.from({ length: 16 }, (_, index) =>
-      index === 0 && maximum > 0 ? { id: `tile-${maximum}`, value: maximum } : null),
+      index === 0 && maximum > 0 ? { id: `tile-${maximum}`, value: maximum } : null,
+    ),
     score: 0,
     completed2048,
     frozen: false,
   };
 }
 
-function game(completed: number, turn: number, maxima: readonly [number, number, number] = [0, 0, 0]): GameState {
+function game(
+  completed: number,
+  turn: number,
+  maxima: readonly [number, number, number] = [0, 0, 0],
+): GameState {
   return {
     schemaVersion: 1,
     faces: {

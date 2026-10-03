@@ -1,13 +1,13 @@
 name: Bug report
 description: Report a browser or gameplay problem.
-title: "[Bug]: "
+title: '[Bug]: '
 body:
   - type: input
     id: browser
     attributes:
       label: Browser and device
       description: Include browser version, operating system, and device if relevant.
-      placeholder: "Chrome 130 on macOS 15"
+      placeholder: 'Chrome 130 on macOS 15'
     validations:
       required: true
   - type: textarea
@@ -22,6 +22,6 @@ body:
     id: expected
     attributes:
       label: Expected and actual behavior
-      placeholder: "Expected ...; instead ..."
+      placeholder: 'Expected ...; instead ...'
     validations:
       required: true

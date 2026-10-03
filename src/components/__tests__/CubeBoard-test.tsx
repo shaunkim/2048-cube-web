@@ -56,7 +56,10 @@ it('marks only frozen faces with the retired grayscale presentation', () => {
   expect(screen.getByTestId('face-top').props.opacity).toBe(1);
   expect(screen.getByTestId('face-left').props.opacity).toBe(0.78);
   expect(screen.getByTestId('face-right').props.opacity).toBe(1);
-  expect(screen.getByTestId('face-outline-left').props.fill).toEqual({ type: 0, payload: 0xff979797 });
+  expect(screen.getByTestId('face-outline-left').props.fill).toEqual({
+    type: 0,
+    payload: 0xff979797,
+  });
 });
 
 it('keeps a completed live face at full opacity with its normal colors', () => {
@@ -72,7 +75,10 @@ it('keeps a completed live face at full opacity with its normal colors', () => {
   render(<CubeBoard state={state} />);
 
   expect(screen.getByTestId('face-top').props.opacity).toBe(1);
-  expect(screen.getByTestId('face-outline-top').props.fill).toEqual({ type: 0, payload: 0xffd8ccbe });
+  expect(screen.getByTestId('face-outline-top').props.fill).toEqual({
+    type: 0,
+    payload: 0xffd8ccbe,
+  });
 });
 
 it('keeps a completed dead face half-dimmed in color rather than grayscale', () => {
@@ -92,7 +98,10 @@ it('keeps a completed dead face half-dimmed in color rather than grayscale', () 
   render(<CubeBoard state={state} />);
 
   expect(screen.getByTestId('face-top').props.opacity).toBe(0.5);
-  expect(screen.getByTestId('face-outline-top').props.fill).toEqual({ type: 0, payload: 0xffd8ccbe });
+  expect(screen.getByTestId('face-outline-top').props.fill).toEqual({
+    type: 0,
+    payload: 0xffd8ccbe,
+  });
 });
 
 it('pulses every occupied tile on a newly completed face from its own center', () => {
@@ -122,16 +131,18 @@ it('pulses every occupied tile on a newly completed face from its own center', (
     completedFacesStarted: ['top'],
     victoryStarted: false,
     gameOverStarted: false,
-    faces: [{
-      face: 'top',
-      direction: 'left',
-      board: top,
-      changed: true,
-      completed2048Started: true,
-      motions: [],
-      merges: [{ sourceIds: ['a', 'b'], result: { id: 'new-2048', value: 2048 }, at: 0 }],
-      spawn: { tile: { id: 'spawn', value: 2 }, at: 1 },
-    }],
+    faces: [
+      {
+        face: 'top',
+        direction: 'left',
+        board: top,
+        changed: true,
+        completed2048Started: true,
+        motions: [],
+        merges: [{ sourceIds: ['a', 'b'], result: { id: 'new-2048', value: 2048 }, at: 0 }],
+        spawn: { tile: { id: 'spawn', value: 2 }, at: 1 },
+      },
+    ],
   };
 
   const view = render(<CubeBoard state={state} celebration={celebration} />);
@@ -161,6 +172,9 @@ it('restores face and tile colors when a frozen cube is rendered for sharing', (
   render(<CubeBoard state={state} forceFullColor />);
 
   expect(screen.getByTestId('face-left').props.opacity).toBe(1);
-  expect(screen.getByTestId('face-outline-left').props.fill).toEqual({ type: 0, payload: 0xffafa294 });
+  expect(screen.getByTestId('face-outline-left').props.fill).toEqual({
+    type: 0,
+    payload: 0xffafa294,
+  });
   expect(screen.UNSAFE_getAllByType(Path).map((path) => path.props.fill)).toContain('#D1C9C0');
 });

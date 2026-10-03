@@ -1,16 +1,16 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Platform } from 'react-native';
 
+import App from '../App';
+import type { IdSource, RandomSource } from '../src/game/model';
+import type { KeyValueStore } from '../src/storage/gameStorage';
+
 jest.mock('../src/storage/platformStore', () => ({
   platformStore: {
     getItem: async () => null,
     setItem: async () => undefined,
   },
 }));
-
-import App from '../App';
-import type { IdSource, RandomSource } from '../src/game/model';
-import type { KeyValueStore } from '../src/storage/gameStorage';
 
 function memoryStore(): KeyValueStore {
   let value: string | null = null;
@@ -52,11 +52,7 @@ describe('<App />', () => {
       <App
         controllerDependencies={{
           store: memoryStore(),
-          random: random([
-            0.99, 0, 0.99, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-          ]),
+          random: random([0.99, 0, 0.99, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
           ids: ids(),
           animationMs: 180,
         }}
@@ -92,5 +88,4 @@ describe('<App />', () => {
     view.unmount();
     jest.useRealTimers();
   });
-
 });

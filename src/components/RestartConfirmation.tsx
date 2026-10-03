@@ -24,10 +24,20 @@ export function RestartConfirmation({ visible, onCancel, onConfirm }: RestartCon
           <Text style={styles.heading}>Restart this run?</Text>
           <Text style={styles.body}>Current board progress will be replaced.</Text>
           <View style={styles.actions}>
-            <Pressable accessibilityRole="button" accessibilityLabel="Cancel restart" onPress={onCancel} style={styles.cancelButton}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Cancel restart"
+              onPress={onCancel}
+              style={styles.cancelButton}
+            >
               <Text style={styles.cancelText}>Cancel</Text>
             </Pressable>
-            <Pressable accessibilityRole="button" accessibilityLabel="Confirm restart" onPress={onConfirm} style={styles.restartButton}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Confirm restart"
+              onPress={onConfirm}
+              style={styles.restartButton}
+            >
               <Text style={styles.restartText}>Restart</Text>
             </Pressable>
           </View>

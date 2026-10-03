@@ -30,9 +30,7 @@ export interface AppProps {
 export const GAME_OVER_TRANSITION_MS = 500;
 
 export function cubeWidthFor(windowWidth: number): number {
-  return windowWidth >= 720
-    ? Math.min(windowWidth - 96, 1120)
-    : Math.min(windowWidth + 48, 680);
+  return windowWidth >= 720 ? Math.min(windowWidth - 96, 1120) : Math.min(windowWidth + 48, 680);
 }
 
 type Panel = 'game' | 'menu' | 'tutorial';
@@ -47,7 +45,7 @@ export default function App({ controllerDependencies }: AppProps = {}) {
   const { width: windowWidth } = useWindowDimensions();
   const cubeWidth = cubeWidthFor(windowWidth);
   const isPhoneLayout = windowWidth < 720;
-  const cubeOpacity = useRef(new Animated.Value(1)).current;
+  const [cubeOpacity] = useState(() => new Animated.Value(1));
   const gameOverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [panel, setPanel] = useState<Panel>('game');
   const [messageCycle, setMessageCycle] = useState(0);
@@ -57,9 +55,13 @@ export default function App({ controllerDependencies }: AppProps = {}) {
   const inputLocked = controller.locked || panel !== 'game' || leaderboardVisible;
   const panHandlers = useDirectionalInput(controller.move, inputLocked);
   const invalidMoveCount = controller.invalidMoveCount;
-  const totalScore = Object.values(controller.game.faces).reduce((total, face) => total + face.score, 0);
+  const totalScore = Object.values(controller.game.faces).reduce(
+    (total, face) => total + face.score,
+    0,
+  );
   const gameOverStarted = controller.animation?.gameOverStarted ?? false;
-  const showGameOver = controller.game.status === 'gameOver' && !gameOverStarted && !gameOverTransitionPending;
+  const showGameOver =
+    controller.game.status === 'gameOver' && !gameOverStarted && !gameOverTransitionPending;
 
   useEffect(() => {
     if (invalidMoveCount === 0) return;
@@ -79,9 +81,12 @@ export default function App({ controllerDependencies }: AppProps = {}) {
     }, GAME_OVER_TRANSITION_MS);
   }, [gameOverStarted]);
 
-  useEffect(() => () => {
-    if (gameOverTimerRef.current !== null) clearTimeout(gameOverTimerRef.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (gameOverTimerRef.current !== null) clearTimeout(gameOverTimerRef.current);
+    },
+    [],
+  );
 
   const openMenu = () => {
     setPanel('menu');
@@ -128,57 +133,59 @@ export default function App({ controllerDependencies }: AppProps = {}) {
             best={controller.records.bestTotalScore}
             onTryAgain={restartGame}
           />
-        ) : <>
-          <GameHud
-          game={controller.game}
-          messageCycle={messageCycle}
-          records={controller.records}
-          onMenu={openMenu}
-          onLeaderboard={() => setLeaderboardVisible(true)}
-        />
-        <View style={styles.content}>
-          <Animated.View
-            testID="cube-stage"
-            {...panHandlers}
-            style={[
-              styles.cubeContainer,
-              isPhoneLayout && styles.phoneCubeContainer,
-              { width: cubeWidth, maxHeight: '72%', opacity: cubeOpacity },
-            ]}
-          >
-            <CubeBoard
-              state={controller.game}
-              animation={controller.animation}
-              celebration={controller.celebration}
+        ) : (
+          <>
+            <GameHud
+              game={controller.game}
+              messageCycle={messageCycle}
+              records={controller.records}
+              onMenu={openMenu}
+              onLeaderboard={() => setLeaderboardVisible(true)}
             />
-          </Animated.View>
-          <DirectionPad
-            onDirection={controller.move}
-            disabled={!controller.hydrated || inputLocked}
-            compact={isPhoneLayout}
-          />
-        </View>
-          <WebFooter compact={isPhoneLayout} />
-          <GameOverlay celebration={controller.celebration} />
-        <MenuSheet
-          visible={panel === 'menu'}
-          onResume={() => setPanel('game')}
-          onNewGame={startNewGame}
-          onTutorial={openTutorial}
-          onFeedback={openFeedback}
-        />
-        <TutorialScreen
-          visible={panel === 'tutorial'}
-          page={tutorialPage}
-          onPageChange={setTutorialPage}
-          onCloseToMenu={openMenu}
-          onPlay={() => setPanel('game')}
-        />
-        <LeaderboardPlaceholder
-          visible={leaderboardVisible}
-          onClose={() => setLeaderboardVisible(false)}
-        />
-        </>}
+            <View style={styles.content}>
+              <Animated.View
+                testID="cube-stage"
+                {...panHandlers}
+                style={[
+                  styles.cubeContainer,
+                  isPhoneLayout && styles.phoneCubeContainer,
+                  { width: cubeWidth, maxHeight: '72%', opacity: cubeOpacity },
+                ]}
+              >
+                <CubeBoard
+                  state={controller.game}
+                  animation={controller.animation}
+                  celebration={controller.celebration}
+                />
+              </Animated.View>
+              <DirectionPad
+                onDirection={controller.move}
+                disabled={!controller.hydrated || inputLocked}
+                compact={isPhoneLayout}
+              />
+            </View>
+            <WebFooter compact={isPhoneLayout} />
+            <GameOverlay celebration={controller.celebration} />
+            <MenuSheet
+              visible={panel === 'menu'}
+              onResume={() => setPanel('game')}
+              onNewGame={startNewGame}
+              onTutorial={openTutorial}
+              onFeedback={openFeedback}
+            />
+            <TutorialScreen
+              visible={panel === 'tutorial'}
+              page={tutorialPage}
+              onPageChange={setTutorialPage}
+              onCloseToMenu={openMenu}
+              onPlay={() => setPanel('game')}
+            />
+            <LeaderboardPlaceholder
+              visible={leaderboardVisible}
+              onClose={() => setLeaderboardVisible(false)}
+            />
+          </>
+        )}
       </SafeAreaView>
     </SafeAreaProvider>
   );

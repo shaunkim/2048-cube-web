@@ -137,18 +137,23 @@ function hasValidStatusInvariants(
   const dead = boards.map((board) => !hasLegalMove(board));
 
   if (mode === 'strict') {
-    return boards.every((board) => !board.frozen) === true &&
-      (status === 'gameOver') === dead.some(Boolean);
+    return (
+      boards.every((board) => !board.frozen) === true &&
+      (status === 'gameOver') === dead.some(Boolean)
+    );
   }
 
-  return boards.every((board, index) => board.frozen === dead[index]) &&
-    (status === 'gameOver') === boards.every((board) => board.frozen);
+  return (
+    boards.every((board, index) => board.frozen === dead[index]) &&
+    (status === 'gameOver') === boards.every((board) => board.frozen)
+  );
 }
 
 function asGameState(value: unknown): GameState | null {
   if (!isObject(value) || value.schemaVersion !== 1 || !isGameMode(value.mode)) return null;
   if (!isGameStatus(value.status) || typeof value.victoryReached !== 'boolean') return null;
-  if (typeof value.turn !== 'number' || !Number.isInteger(value.turn) || value.turn < 0) return null;
+  if (typeof value.turn !== 'number' || !Number.isInteger(value.turn) || value.turn < 0)
+    return null;
 
   const faces = asFaces(value.faces);
   if (!faces || !hasUniqueTileIds(faces)) return null;
@@ -169,7 +174,8 @@ function asGameState(value: unknown): GameState | null {
 
 function asScoreRecords(value: unknown): ScoreRecords | null {
   if (!isObject(value) || !isNonNegativeFiniteNumber(value.bestTotalScore)) return null;
-  if (!isObject(value.bestFaceScores) || !hasExactlyKeys(value.bestFaceScores, FACE_IDS)) return null;
+  if (!isObject(value.bestFaceScores) || !hasExactlyKeys(value.bestFaceScores, FACE_IDS))
+    return null;
 
   const { top, left, right } = value.bestFaceScores;
   if (
@@ -200,7 +206,10 @@ export function createFreshDocument(game: GameState): StoredDocumentV1 {
   };
 }
 
-export async function saveGameData(store: KeyValueStore, document: StoredDocumentV1): Promise<void> {
+export async function saveGameData(
+  store: KeyValueStore,
+  document: StoredDocumentV1,
+): Promise<void> {
   await store.setItem(STORAGE_KEY, JSON.stringify(document));
 }
 
