@@ -36,8 +36,15 @@ it('starts a progressed browser run immediately', async () => {
     getItem: async () => JSON.stringify(document),
     setItem: async () => undefined,
   };
-  const ids = { next: (() => { let id = 0; return () => `restart-${++id}`; })() };
-  const view = render(<App controllerDependencies={{ store, ids, random: { next: () => 0 }, animationMs: 180 }} />);
+  const ids = {
+    next: (() => {
+      let id = 0;
+      return () => `restart-${++id}`;
+    })(),
+  };
+  const view = render(
+    <App controllerDependencies={{ store, ids, random: { next: () => 0 }, animationMs: 180 }} />,
+  );
 
   await waitFor(() => expect(screen.getByLabelText('SCORE 90')).toBeTruthy());
   fireEvent.press(screen.getByRole('button', { name: 'Menu' }));

@@ -1,13 +1,13 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Platform } from 'react-native';
 
-jest.mock('../src/storage/platformStore', () => ({
-  platformStore: { getItem: async () => null, setItem: async () => undefined },
-}));
-
 import App from '../App';
 import type { BoardState, IdSource, RandomSource, StoredDocumentV1 } from '../src/game/model';
 import type { KeyValueStore } from '../src/storage/gameStorage';
+
+jest.mock('../src/storage/platformStore', () => ({
+  platformStore: { getItem: async () => null, setItem: async () => undefined },
+}));
 
 const originalPlatform = Platform.OS;
 const originalAddEventListener = window.addEventListener;

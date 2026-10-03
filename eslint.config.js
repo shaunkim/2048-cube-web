@@ -6,4 +6,14 @@ module.exports = defineConfig([
   {
     ignores: ['dist/**', 'coverage/**'],
   },
+  {
+    files: ['**/*.js'],
+    languageOptions: { globals: { __dirname: 'readonly' } },
+  },
+  {
+    files: ['**/__tests__/**', 'jest.setup.js'],
+    languageOptions: {
+      globals: { jest: 'readonly', it: 'readonly', expect: 'readonly', test: 'readonly' },
+    },
+  },
 ]);

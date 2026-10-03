@@ -41,7 +41,23 @@ function memoryStore(initial: string | null = null): KeyValueStore {
   };
 }
 
-function trackedMemoryStore(initial: string | null = null): KeyValueStore & { writeCount(): number } {
+it('preserves input callback identity while using the latest run after restart', async () => {
+  const { result } = renderHook(() => useGameController({ store: memoryStore() }));
+  await waitFor(() => expect(result.current.hydrated).toBe(true));
+  const move = result.current.move;
+  const restart = result.current.restart;
+  const previousGame = result.current.game;
+  act(() => restart());
+  expect(result.current.game).not.toBe(previousGame);
+  expect(result.current.move).toBe(move);
+  expect(result.current.restart).toBe(restart);
+  await act(async () => move('up'));
+  expect(result.current.move).toBe(move);
+});
+
+function trackedMemoryStore(
+  initial: string | null = null,
+): KeyValueStore & { writeCount(): number } {
   let value = initial;
   let writes = 0;
   return {
@@ -69,7 +85,10 @@ function emptyBoard(): BoardState {
 
 function deadBoard(prefix: string): BoardState {
   const values = [2, 4, 2, 4, 4, 2, 4, 2, 2, 4, 2, 4, 4, 2, 4, 2];
-  return { ...emptyBoard(), cells: values.map((value, index) => tile(`${prefix}-${index}`, value)) };
+  return {
+    ...emptyBoard(),
+    cells: values.map((value, index) => tile(`${prefix}-${index}`, value)),
+  };
 }
 
 function strictGameOver(): GameState {
@@ -101,8 +120,17 @@ function strictGameOver(): GameState {
   };
 }
 
-function document(activeRun: GameState, records: ScoreRecords, mode: 'strict' | 'continue' = 'strict') {
-  return JSON.stringify({ version: 1, activeRun, records, preferences: { mode } } satisfies StoredDocumentV1);
+function document(
+  activeRun: GameState,
+  records: ScoreRecords,
+  mode: 'strict' | 'continue' = 'strict',
+) {
+  return JSON.stringify({
+    version: 1,
+    activeRun,
+    records,
+    preferences: { mode },
+  } satisfies StoredDocumentV1);
 }
 
 async function waitForHydration(result: { current: ReturnType<typeof useGameController> }) {
@@ -129,12 +157,14 @@ afterEach(() => {
 it('locks one changed global turn, saves its exact next state, then unlocks after 180ms', async () => {
   jest.useFakeTimers();
   const store = memoryStore();
-  const { result } = renderHook(() => useGameController({
-    random: repeatingRandom([0, 0]),
-    ids: incrementingIds('test'),
-    store,
-    animationMs: 180,
-  }));
+  const { result } = renderHook(() =>
+    useGameController({
+      random: repeatingRandom([0, 0]),
+      ids: incrementingIds('test'),
+      store,
+      animationMs: 180,
+    }),
+  );
 
   await waitForHydration(result);
 
@@ -169,16 +199,24 @@ it('keeps a first-completion celebration after input unlock and clears it at 400
     victoryReached: false,
     turn: 0,
   };
-  const store = memoryStore(document(activeRun, {
-    bestTotalScore: 0,
-    bestFaceScores: { top: 0, left: 0, right: 0 },
-  }, 'continue'));
-  const { result } = renderHook(() => useGameController({
-    random: repeatingRandom([0, 0]),
-    ids: incrementingIds('celebrate'),
-    store,
-    animationMs: 180,
-  }));
+  const store = memoryStore(
+    document(
+      activeRun,
+      {
+        bestTotalScore: 0,
+        bestFaceScores: { top: 0, left: 0, right: 0 },
+      },
+      'continue',
+    ),
+  );
+  const { result } = renderHook(() =>
+    useGameController({
+      random: repeatingRandom([0, 0]),
+      ids: incrementingIds('celebrate'),
+      store,
+      animationMs: 180,
+    }),
+  );
 
   await waitForHydration(result);
   act(() => result.current.move('up'));
@@ -198,12 +236,14 @@ it('keeps a first-completion celebration after input unlock and clears it at 400
 
 it('counts an unchanged direction without locking, turning, or saving', async () => {
   const store = trackedMemoryStore();
-  const { result } = renderHook(() => useGameController({
-    random: repeatingRandom([0, 0]),
-    ids: incrementingIds('test'),
-    store,
-    animationMs: 180,
-  }));
+  const { result } = renderHook(() =>
+    useGameController({
+      random: repeatingRandom([0, 0]),
+      ids: incrementingIds('test'),
+      store,
+      animationMs: 180,
+    }),
+  );
 
   await waitForHydration(result);
   await waitFor(() => expect(store.writeCount()).toBe(1));
@@ -217,22 +257,26 @@ it('counts an unchanged direction without locking, turning, or saving', async ()
 
 it('checkpoints a fresh hydrated run so an immediate reload restores that exact run', async () => {
   const store = memoryStore();
-  const first = renderHook(() => useGameController({
-    random: repeatingRandom([0, 0]),
-    ids: incrementingIds('first'),
-    store,
-  }));
+  const first = renderHook(() =>
+    useGameController({
+      random: repeatingRandom([0, 0]),
+      ids: incrementingIds('first'),
+      store,
+    }),
+  );
 
   await waitForHydration(first.result);
   const hydratedGame = first.result.current.game;
   await waitForStoredDocument(store);
   first.unmount();
 
-  const second = renderHook(() => useGameController({
-    random: repeatingRandom([0.99, 0.95]),
-    ids: incrementingIds('second'),
-    store,
-  }));
+  const second = renderHook(() =>
+    useGameController({
+      random: repeatingRandom([0.99, 0.95]),
+      ids: incrementingIds('second'),
+      store,
+    }),
+  );
   await waitForHydration(second.result);
 
   expect(second.result.current.game).toEqual(hydratedGame);
@@ -241,17 +285,21 @@ it('checkpoints a fresh hydrated run so an immediate reload restores that exact 
 
 it('durably replaces an invalid active run while retaining valid records and preferences', async () => {
   const records = { bestTotalScore: 200, bestFaceScores: { top: 128, left: 8, right: 16 } };
-  const store = memoryStore(JSON.stringify({
-    version: 1,
-    activeRun: { schemaVersion: 1, faces: {} },
-    records,
-    preferences: { mode: 'continue' },
-  }));
-  const first = renderHook(() => useGameController({
-    random: repeatingRandom([0, 0]),
-    ids: incrementingIds('recovered'),
-    store,
-  }));
+  const store = memoryStore(
+    JSON.stringify({
+      version: 1,
+      activeRun: { schemaVersion: 1, faces: {} },
+      records,
+      preferences: { mode: 'continue' },
+    }),
+  );
+  const first = renderHook(() =>
+    useGameController({
+      random: repeatingRandom([0, 0]),
+      ids: incrementingIds('recovered'),
+      store,
+    }),
+  );
 
   await waitForHydration(first.result);
   const recoveredGame = first.result.current.game;
@@ -267,11 +315,13 @@ it('durably replaces an invalid active run while retaining valid records and pre
   });
   first.unmount();
 
-  const second = renderHook(() => useGameController({
-    random: repeatingRandom([0.99, 0.95]),
-    ids: incrementingIds('different'),
-    store,
-  }));
+  const second = renderHook(() =>
+    useGameController({
+      random: repeatingRandom([0.99, 0.95]),
+      ids: incrementingIds('different'),
+      store,
+    }),
+  );
   await waitForHydration(second.result);
 
   expect(second.result.current.game).toEqual(recoveredGame);
@@ -302,20 +352,30 @@ it('normalizes a strict game-over run during hydration without changing progress
 it('restarts with two tiles on each face while preserving records and preferences', async () => {
   const records = { bestTotalScore: 200, bestFaceScores: { top: 128, left: 8, right: 16 } };
   const store = memoryStore(document(strictGameOver(), records, 'continue'));
-  const { result } = renderHook(() => useGameController({
-    random: repeatingRandom([0, 0]),
-    ids: incrementingIds('restart'),
-    store,
-  }));
+  const { result } = renderHook(() =>
+    useGameController({
+      random: repeatingRandom([0, 0]),
+      ids: incrementingIds('restart'),
+      store,
+    }),
+  );
 
   await waitForHydration(result);
   act(() => result.current.restart());
 
   expect(result.current.game.mode).toBe('continue');
   expect(result.current.game.turn).toBe(0);
-  expect(Object.values(result.current.game.faces).map((board) => board.cells.filter(Boolean))).toHaveLength(3);
-  expect(Object.values(result.current.game.faces).every((board) => board.cells.filter(Boolean).length === 2)).toBe(true);
-  expect(Object.values(result.current.game.faces).every((board) => !board.completed2048)).toBe(true);
+  expect(
+    Object.values(result.current.game.faces).map((board) => board.cells.filter(Boolean)),
+  ).toHaveLength(3);
+  expect(
+    Object.values(result.current.game.faces).every(
+      (board) => board.cells.filter(Boolean).length === 2,
+    ),
+  ).toBe(true);
+  expect(Object.values(result.current.game.faces).every((board) => !board.completed2048)).toBe(
+    true,
+  );
   expect(scoreMultiplierFor(result.current.game.faces)).toBe(1);
   expect(result.current.records).toEqual(records);
   expect(result.current.preferences).toEqual({ mode: 'continue' });
@@ -339,11 +399,13 @@ it('leaves the latest restart document stored when an older turn write settles l
       stored = value;
     },
   };
-  const { result } = renderHook(() => useGameController({
-    random: repeatingRandom([0, 0]),
-    ids: incrementingIds('queued'),
-    store,
-  }));
+  const { result } = renderHook(() =>
+    useGameController({
+      random: repeatingRandom([0, 0]),
+      ids: incrementingIds('queued'),
+      store,
+    }),
+  );
 
   await waitForHydration(result);
   act(() => result.current.move('down'));
@@ -371,7 +433,9 @@ it('reserves restored production tile IDs before a next ID can be requested', as
     },
     status: 'gameOver' as const,
   };
-  const store = memoryStore(document(restored, { bestTotalScore: 0, bestFaceScores: { top: 0, left: 0, right: 0 } }));
+  const store = memoryStore(
+    document(restored, { bestTotalScore: 0, bestFaceScores: { top: 0, left: 0, right: 0 } }),
+  );
   const { result } = renderHook(() => useGameController({ store }));
 
   await waitForHydration(result);
@@ -389,11 +453,13 @@ it('keeps a committed move in memory and continues later saves when persistence 
     },
   };
   const warning = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
-  const { result } = renderHook(() => useGameController({
-    random: repeatingRandom([0, 0]),
-    ids: incrementingIds('test'),
-    store,
-  }));
+  const { result } = renderHook(() =>
+    useGameController({
+      random: repeatingRandom([0, 0]),
+      ids: incrementingIds('test'),
+      store,
+    }),
+  );
 
   await waitForHydration(result);
   act(() => result.current.move('down'));

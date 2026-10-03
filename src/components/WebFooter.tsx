@@ -62,9 +62,11 @@ export function WebFooter({
 
 function DestinationBadge({ destination }: { readonly destination: FooterDestination }) {
   const url = destination.url;
-  const badgeContents = <>
-    <Text style={styles.mark}>{destination.mark}</Text>
-  </>;
+  const badgeContents = (
+    <>
+      <Text style={styles.mark}>{destination.mark}</Text>
+    </>
+  );
 
   if (url) {
     return (
@@ -87,8 +89,24 @@ function DestinationBadge({ destination }: { readonly destination: FooterDestina
 }
 
 const styles = StyleSheet.create({
-  footer: { alignItems: 'center', flexDirection: 'row', gap: 10, justifyContent: 'center', paddingBottom: 12, paddingHorizontal: 16 },
+  footer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'center',
+    paddingBottom: 12,
+    paddingHorizontal: 16,
+  },
   compactFooter: { gap: 6, paddingBottom: 8 },
-  badge: { alignItems: 'center', backgroundColor: gameTheme.emptyCell, borderColor: gameTheme.grid, borderRadius: 6, borderWidth: 2, height: 42, justifyContent: 'center', width: 42 },
+  badge: {
+    alignItems: 'center',
+    backgroundColor: gameTheme.emptyCell,
+    borderColor: gameTheme.grid,
+    borderRadius: 6,
+    borderWidth: 2,
+    height: 42,
+    justifyContent: 'center',
+    width: 42,
+  },
   mark: { color: gameTheme.ink, fontFamily: gameTheme.fonts.bold, fontSize: 18, letterSpacing: -1 },
 });

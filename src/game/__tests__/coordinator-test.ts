@@ -5,15 +5,7 @@ import {
   scoreMultiplierFor,
   startGame,
 } from '../coordinator';
-import type {
-  BoardState,
-  Cell,
-  GameMode,
-  GameState,
-  IdSource,
-  RandomSource,
-  Tile,
-} from '../model';
+import type { BoardState, Cell, GameMode, GameState, IdSource, RandomSource, Tile } from '../model';
 
 const tile = (id: string, value: number): Tile => ({ id, value });
 const emptyCells = (): Cell[] => Array.from({ length: 16 }, () => null);
@@ -113,28 +105,23 @@ describe('global turns', () => {
     [1, 8],
     [2, 16],
     [3, 32],
-  ] as const)('uses completed-face multiplier for future merges (%i completed)', (
-    completed,
-    expectedDelta,
-  ) => {
-    const leftCells = emptyCells();
-    leftCells[0] = tile('left-a', 2);
-    leftCells[4] = tile('left-b', 2);
-    const state = game({
-      top: face(emptyCells(), { completed2048: completed > 0 }),
-      left: face(leftCells, { completed2048: completed > 1 }),
-      right: face(emptyCells(), { completed2048: completed > 2 }),
-    });
+  ] as const)(
+    'uses completed-face multiplier for future merges (%i completed)',
+    (completed, expectedDelta) => {
+      const leftCells = emptyCells();
+      leftCells[0] = tile('left-a', 2);
+      leftCells[4] = tile('left-b', 2);
+      const state = game({
+        top: face(emptyCells(), { completed2048: completed > 0 }),
+        left: face(leftCells, { completed2048: completed > 1 }),
+        right: face(emptyCells(), { completed2048: completed > 2 }),
+      });
 
-    const result = applyGlobalMove(
-      state,
-      'up',
-      random(0, 0),
-      ids('merge', 'spawn'),
-    );
+      const result = applyGlobalMove(state, 'up', random(0, 0), ids('merge', 'spawn'));
 
-    expect(result.state.faces.left.score).toBe(expectedDelta);
-  });
+      expect(result.state.faces.left.score).toBe(expectedDelta);
+    },
+  );
 
   it('uses the start-of-move multiplier when that move completes the first face', () => {
     const leftCells = emptyCells();
@@ -146,12 +133,7 @@ describe('global turns', () => {
       right: face(emptyCells()),
     });
 
-    const result = applyGlobalMove(
-      state,
-      'up',
-      random(0, 0),
-      ids('merge', 'spawn'),
-    );
+    const result = applyGlobalMove(state, 'up', random(0, 0), ids('merge', 'spawn'));
 
     expect(result.state.faces.left.score).toBe(22_048);
     expect(result.state.faces.left.completed2048).toBe(true);
@@ -169,12 +151,7 @@ describe('global turns', () => {
       right: face(emptyCells()),
     });
 
-    const result = applyGlobalMove(
-      state,
-      'up',
-      random(0, 0),
-      ids('merge', 'spawn'),
-    );
+    const result = applyGlobalMove(state, 'up', random(0, 0), ids('merge', 'spawn'));
 
     expect(result.completedFacesStarted).toEqual([]);
     expect(scoreMultiplierFor(result.state.faces)).toBe(2);

@@ -1,5 +1,4 @@
 import {
-  DEFAULT_CUBE_VIEWPORT,
   FACE_GEOMETRY,
   cellCenter,
   cellPolygon,

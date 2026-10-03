@@ -1,15 +1,6 @@
-import type {
-  Cell,
-  CollapseLineResult,
-  IdSource,
-  LineMerge,
-  LineMotion,
-} from './model';
+import type { Cell, CollapseLineResult, IdSource, LineMerge, LineMotion } from './model';
 
-export function collapseLine(
-  cells: readonly Cell[],
-  ids: IdSource,
-): CollapseLineResult {
+export function collapseLine(cells: readonly Cell[], ids: IdSource): CollapseLineResult {
   if (cells.length !== 4) throw new Error('A 2048 line must contain four cells');
 
   const occupied = cells.flatMap((tile, index) => (tile ? [{ tile, index }] : []));
@@ -28,7 +19,12 @@ export function collapseLine(
       const result = { id: ids.next(), value: current.tile.value * 2 };
       output.push(result);
       motions.push(
-        { tileId: current.tile.id, value: current.tile.value, from: current.index, to: destination },
+        {
+          tileId: current.tile.id,
+          value: current.tile.value,
+          from: current.index,
+          to: destination,
+        },
         { tileId: next.tile.id, value: next.tile.value, from: next.index, to: destination },
       );
       merges.push({ sourceIds: [current.tile.id, next.tile.id], result, at: destination });

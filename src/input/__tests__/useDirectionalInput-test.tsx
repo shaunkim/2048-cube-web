@@ -10,24 +10,26 @@ function swipeEvent(dx: number, dy: number) {
       indexOfSingleActiveTouch: 0,
       mostRecentTimeStamp: 1,
       numberActiveTouches: 1,
-      touchBank: [{
-        currentPageX: dx,
-        currentPageY: dy,
-        currentTimeStamp: 1,
-        previousPageX: 0,
-        previousPageY: 0,
-        touchActive: true,
-      }],
+      touchBank: [
+        {
+          currentPageX: dx,
+          currentPageY: dy,
+          currentTimeStamp: 1,
+          previousPageX: 0,
+          previousPageY: 0,
+          touchActive: true,
+        },
+      ],
     },
   };
 }
 
 it('dispatches a recognized swipe at the threshold before release and only once', () => {
   const onDirection = jest.fn();
-  const { result, rerender } = renderHook<ReturnType<typeof useDirectionalInput>, { locked: boolean }>(
-    ({ locked }) => useDirectionalInput(onDirection, locked),
-    { initialProps: { locked: false } },
-  );
+  const { result, rerender } = renderHook<
+    ReturnType<typeof useDirectionalInput>,
+    { locked: boolean }
+  >(({ locked }) => useDirectionalInput(onDirection, locked), { initialProps: { locked: false } });
 
   const event = swipeEvent(0, -60);
   act(() => {
@@ -88,10 +90,9 @@ it('keeps the one-shot guard across a parent rerender during a held gesture', ()
   const { result, rerender } = renderHook<
     ReturnType<typeof useDirectionalInput>,
     { handler: (direction: GlobalDirection) => void }
-  >(
-    ({ handler }) => useDirectionalInput(handler, false),
-    { initialProps: { handler: firstHandler } },
-  );
+  >(({ handler }) => useDirectionalInput(handler, false), {
+    initialProps: { handler: firstHandler },
+  });
   const event = swipeEvent(0, -60);
 
   act(() => {

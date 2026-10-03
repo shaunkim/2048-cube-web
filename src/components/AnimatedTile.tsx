@@ -24,10 +24,15 @@ export const TILE_ANIMATION_TIMINGS = {
   mergeSource: { delay: 0, duration: 80 },
   mergeResult: { delay: 0, duration: 130 },
   spawn: { delay: 10, duration: 120 },
-} as const satisfies Readonly<Record<TileMotionKind, {
-  readonly delay: number;
-  readonly duration: number;
-}>>;
+} as const satisfies Readonly<
+  Record<
+    TileMotionKind,
+    {
+      readonly delay: number;
+      readonly duration: number;
+    }
+  >
+>;
 
 export const TILE_ANIMATION_SCALES = {
   mergeResult: { inputRange: [0, 0.55, 1], outputRange: [1, 1.18, 1] },
@@ -59,10 +64,7 @@ function timingFor(kind: TileMotionKind, progress: Animated.Value): Animated.Com
     useNativeDriver: false,
   });
   if (timing.delay > 0) {
-    return Animated.sequence([
-      Animated.delay(timing.delay),
-      animation,
-    ]);
+    return Animated.sequence([Animated.delay(timing.delay), animation]);
   }
 
   return animation;
@@ -107,15 +109,13 @@ export function AnimatedTile({ face, index, value, kind, fromIndex, testID }: An
       ? progress.interpolate({ inputRange: [0, 0.7, 1], outputRange: [1, 1, 0] })
       : 1;
 
-  const localTile = tilePolygon(face, row, column).map((point) => relativeTo(destinationCenter, point));
+  const localTile = tilePolygon(face, row, column).map((point) =>
+    relativeTo(destinationCenter, point),
+  );
 
   return (
     <G testID={testID} transform={`translate(${destinationCenter.x} ${destinationCenter.y})`}>
-      <AnimatedGroup
-        testID={`${testID}-motion`}
-        {...motionProps}
-        opacity={opacity}
-      >
+      <AnimatedGroup testID={`${testID}-motion`} {...motionProps} opacity={opacity}>
         <AnimatedGroup testID={`${testID}-appearance`} scale={scale}>
           <Path d={roundedPolygonPath(localTile)} fill={style.fill} />
           <SvgText

@@ -1,6 +1,6 @@
 name: Feature request
 description: Suggest a gameplay or quality-of-life improvement.
-title: "[Feature]: "
+title: '[Feature]: '
 body:
   - type: textarea
     id: problem

@@ -1,13 +1,15 @@
 # 2048³
-<img src="assets/favicon.png" alt="favion" width="150" align="left" />
+
+<img src="assets/icon.png" alt="2048 cubed icon" width="150" align="left" />
 <br clear="left" />
 
 2048³ is a browser game that reimagines 2048 on three visible faces of a cube. Combine matching tiles, complete every face, and keep playing for a higher score. Each face is an independent 4×4 board. A global move affects two faces at once, but tiles never cross from one face to another.
 
-
 ## Play Online
 
 Play at [2048.lunaandsol.org](https://2048.lunaandsol.org/).
+
+The [GitHub Pages address](https://shaunkim.github.io/2048-cube-web/) redirects to the same site.
 
 ## Get the Game
 
@@ -21,14 +23,14 @@ Merge equal tiles to make larger values. The goal is to create a 2048 tile on al
 
 Every move targets two faces and applies the following local directions:
 
-| Global direction | Moving faces |
-| --- | --- |
-| Up | Left: up; Right: up |
-| Down | Left: down; Right: down |
-| Up-left | Top: up; Left: left |
-| Up-right | Top: right; Right: right |
-| Down-left | Top: left; Right: left |
-| Down-right | Top: down; Left: right |
+| Global direction | Moving faces             |
+| ---------------- | ------------------------ |
+| Up               | Left: up; Right: up      |
+| Down             | Left: down; Right: down  |
+| Up-left          | Top: up; Left: left      |
+| Up-right         | Top: right; Right: right |
+| Down-left        | Top: left; Right: left   |
+| Down-right       | Top: down; Left: right   |
 
 Each changed face receives its own new tile. A face with no legal moves becomes frozen: it no longer moves or receives new tiles, while the other faces remain playable. The run ends only when all three faces are frozen.
 
@@ -40,16 +42,18 @@ Score gains use a multiplier based on completed faces: ×1 before any face reach
 
 Swipe in any of six directions on touch devices. On a keyboard:
 
-| Key | Direction |
-| --- | --- |
-| Q | Up-left |
-| W | Up |
-| E | Up-right |
-| A | Down-left |
-| S | Down |
-| D | Down-right |
+| Key | Direction  |
+| --- | ---------- |
+| Q   | Up-left    |
+| W   | Up         |
+| E   | Up-right   |
+| A   | Down-left  |
+| S   | Down       |
+| D   | Down-right |
 
 ## Run Locally
+
+Use Node.js 22 or later and npm. No accounts, API keys, or native SDKs are needed.
 
 ```bash
 npm ci
@@ -62,6 +66,18 @@ Create a production web export with:
 
 ```bash
 npm run build:web
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for checks and pull requests, and
+[the architecture guide](docs/architecture.md) for the game, rendering, and storage boundaries.
+
+```bash
+npm test -- --runInBand
+npm run typecheck
+npm run lint
+npm run format:check
 ```
 
 ## Feedback / Support

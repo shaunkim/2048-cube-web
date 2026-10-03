@@ -1,11 +1,7 @@
 import { render, screen, within } from '@testing-library/react-native';
 
 import { CubeBoard } from '../CubeBoard';
-import {
-  TILE_ANIMATION_SCALES,
-  TILE_ANIMATION_TIMINGS,
-  tileMotionOffsets,
-} from '../AnimatedTile';
+import { TILE_ANIMATION_SCALES, TILE_ANIMATION_TIMINGS, tileMotionOffsets } from '../AnimatedTile';
 import type { BoardState, Cell, GlobalTurnResult, Tile } from '../../game/model';
 
 const tile = (id: string, value: number): Tile => ({ id, value });
@@ -111,7 +107,10 @@ it('uses the classic overshoot merge and zoom-in spawn keyframes', () => {
     mergeResult: { delay: 0, duration: 130 },
     spawn: { delay: 10, duration: 120 },
   });
-  expect(TILE_ANIMATION_SCALES.mergeResult).toEqual({ inputRange: [0, 0.55, 1], outputRange: [1, 1.18, 1] });
+  expect(TILE_ANIMATION_SCALES.mergeResult).toEqual({
+    inputRange: [0, 0.55, 1],
+    outputRange: [1, 1.18, 1],
+  });
   expect(TILE_ANIMATION_SCALES.spawn).toEqual({ inputRange: [0, 1], outputRange: [0.15, 1] });
 });
 
@@ -120,9 +119,12 @@ it.each([
   ['mergeSource', { x: 18, y: 24 }, { x: 6, y: 9 }, { startX: 12, startY: 15 }],
   ['spawn', { x: 18, y: 24 }, { x: 6, y: 9 }, { startX: 0, startY: 0 }],
   ['mergeResult', { x: 18, y: 24 }, { x: 6, y: 9 }, { startX: 0, startY: 0 }],
-] as const)('%s uses only its approved positional offset', (kind, source, destination, expected) => {
-  expect(tileMotionOffsets(kind, source, destination)).toEqual(expected);
-});
+] as const)(
+  '%s uses only its approved positional offset',
+  (kind, source, destination, expected) => {
+    expect(tileMotionOffsets(kind, source, destination)).toEqual(expected);
+  },
+);
 
 it('never attaches positional animation props to spawn and merge-result layers', () => {
   jest.useFakeTimers();
@@ -140,20 +142,24 @@ it('never attaches positional animation props to spawn and merge-result layers',
     },
     changed: true,
     completedFacesStarted: [],
-    faces: [{
-      face: 'top',
-      direction: 'left',
-      board: board(topCells),
-      changed: true,
-      completed2048Started: false,
-      motions: [],
-      merges: [{
-        sourceIds: ['source-a', 'source-b'],
-        result: tile('merge-result-id', 8),
-        at: 1,
-      }],
-      spawn: { tile: tile('spawn-id', 2), at: 2 },
-    }],
+    faces: [
+      {
+        face: 'top',
+        direction: 'left',
+        board: board(topCells),
+        changed: true,
+        completed2048Started: false,
+        motions: [],
+        merges: [
+          {
+            sourceIds: ['source-a', 'source-b'],
+            result: tile('merge-result-id', 8),
+            at: 1,
+          },
+        ],
+        spawn: { tile: tile('spawn-id', 2), at: 2 },
+      },
+    ],
     victoryStarted: false,
     gameOverStarted: false,
   };

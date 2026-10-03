@@ -44,7 +44,9 @@ export function DirectionPad({
               style={[styles.button, compact && styles.compactButton]}
             >
               {button.diagonal ? <DiagonalArrow direction={button.direction} /> : null}
-              <Text numberOfLines={1} style={styles.label}>{button.visibleLabel}</Text>
+              <Text numberOfLines={1} style={styles.label}>
+                {button.visibleLabel}
+              </Text>
             </Pressable>
           ))}
         </View>
@@ -66,7 +68,14 @@ function DiagonalArrow({ direction }: { readonly direction: GlobalDirection }) {
 
   return (
     <Svg testID="diagonal-direction-arrow" width={17} height={17} viewBox="0 0 18 18">
-      <Line x1={arrow.line[0]} y1={arrow.line[1]} x2={arrow.line[2]} y2={arrow.line[3]} stroke={gameTheme.ink} strokeWidth={2} />
+      <Line
+        x1={arrow.line[0]}
+        y1={arrow.line[1]}
+        x2={arrow.line[2]}
+        y2={arrow.line[3]}
+        stroke={gameTheme.ink}
+        strokeWidth={2}
+      />
       <Path d={arrow.head} fill="none" stroke={gameTheme.ink} strokeWidth={2} />
     </Svg>
   );

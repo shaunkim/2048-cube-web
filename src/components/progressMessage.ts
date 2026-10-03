@@ -30,9 +30,11 @@ function messageAt<T>(messages: readonly T[], messageCycle: number): T {
 }
 
 function nextSharedTarget(game: GameState): number {
-  const sharedMilestone = Math.min(...Object.values(game.faces).map((face) =>
-    Math.max(2048, ...face.cells.map((tile) => tile?.value ?? 0)),
-  ));
+  const sharedMilestone = Math.min(
+    ...Object.values(game.faces).map((face) =>
+      Math.max(2048, ...face.cells.map((tile) => tile?.value ?? 0)),
+    ),
+  );
   return sharedMilestone * 2;
 }
 

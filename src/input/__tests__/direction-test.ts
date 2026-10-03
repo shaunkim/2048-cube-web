@@ -17,23 +17,36 @@ describe('six-way input classification', () => {
   });
 
   it.each([
-    ['q', 'upLeft'], ['w', 'up'], ['e', 'upRight'],
-    ['a', 'downLeft'], ['s', 'down'], ['d', 'downRight'],
+    ['q', 'upLeft'],
+    ['w', 'up'],
+    ['e', 'upRight'],
+    ['a', 'downLeft'],
+    ['s', 'down'],
+    ['d', 'downRight'],
   ] as const)('maps key %s', (key, direction) => {
     expect(directionForKey(key)).toBe(direction);
     expect(directionForKey(key.toUpperCase())).toBe(direction);
   });
 
   it.each([
-    [-61, 'up'], [-59, 'upRight'],
-    [-1, 'upRight'], [1, 'downRight'],
-    [59, 'downRight'], [61, 'down'],
-    [119, 'down'], [121, 'downLeft'],
-    [179, 'downLeft'], [-179, 'upLeft'],
-    [-121, 'upLeft'], [-119, 'up'],
-  ] as const)('classifies angle %s degrees on the expected side of a sector boundary', (degrees, expected) => {
-    const radians = degrees * Math.PI / 180;
+    [-61, 'up'],
+    [-59, 'upRight'],
+    [-1, 'upRight'],
+    [1, 'downRight'],
+    [59, 'downRight'],
+    [61, 'down'],
+    [119, 'down'],
+    [121, 'downLeft'],
+    [179, 'downLeft'],
+    [-179, 'upLeft'],
+    [-121, 'upLeft'],
+    [-119, 'up'],
+  ] as const)(
+    'classifies angle %s degrees on the expected side of a sector boundary',
+    (degrees, expected) => {
+      const radians = (degrees * Math.PI) / 180;
 
-    expect(classifySwipe(Math.cos(radians) * 100, Math.sin(radians) * 100)).toBe(expected);
-  });
+      expect(classifySwipe(Math.cos(radians) * 100, Math.sin(radians) * 100)).toBe(expected);
+    },
+  );
 });

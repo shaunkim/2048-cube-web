@@ -6,11 +6,21 @@ const test = global.test ?? require('node:test');
 const root = resolve(__dirname, '..');
 const packageConfig = require('../package.json');
 const appConfig = require('../app.json');
-const GENERATED_TOP_LEVEL_DIRECTORIES = new Set(['.expo', 'coverage', 'dist', 'node_modules', 'web-build']);
+const GENERATED_TOP_LEVEL_DIRECTORIES = new Set([
+  '.git',
+  '.expo',
+  'coverage',
+  'dist',
+  'node_modules',
+  'web-build',
+]);
 const PUBLIC_TOP_LEVEL_ENTRIES = [
   '.github',
   '.gitignore',
+  '.prettierignore',
+  '.prettierrc.json',
   'App.tsx',
+  'CONTRIBUTING.md',
   'LICENSE',
   'README.md',
   'SECURITY.md',
@@ -18,6 +28,7 @@ const PUBLIC_TOP_LEVEL_ENTRIES = [
   '__tests__',
   'app.json',
   'assets',
+  'docs',
   'eslint.config.js',
   'index.ts',
   'jest.config.js',
@@ -34,7 +45,7 @@ function projectPath(relativePath) {
 
 test('keeps the public tree limited to its documented web inventory', () => {
   const entries = readdirSync(root, { withFileTypes: true })
-    .filter((entry) => !(entry.isDirectory() && GENERATED_TOP_LEVEL_DIRECTORIES.has(entry.name)))
+    .filter((entry) => !GENERATED_TOP_LEVEL_DIRECTORIES.has(entry.name))
     .map((entry) => entry.name)
     .sort();
 
@@ -53,7 +64,10 @@ test('ships no native implementation material', () => {
     'scripts/generate-app-icon.mjs',
   ];
 
-  assert.deepEqual(removedPaths.filter((path) => existsSync(projectPath(path))), []);
+  assert.deepEqual(
+    removedPaths.filter((path) => existsSync(projectPath(path))),
+    [],
+  );
 });
 
 test('exposes only the web build surface', () => {
@@ -69,6 +83,8 @@ test('exposes only the web build surface', () => {
   });
   assert.deepEqual(Object.keys(packageConfig.scripts).sort(), [
     'build:web',
+    'format',
+    'format:check',
     'lint',
     'test',
     'test:watch',
@@ -85,9 +101,10 @@ test('exposes only the web build surface', () => {
   assert.deepEqual(appConfig.expo.web, {
     bundler: 'metro',
     output: 'single',
-    favicon: './assets/favicon.png',
+    favicon: appConfig.expo.icon,
   });
-  assert.deepEqual(appConfig.expo.experiments, { baseUrl: '/2048-cube-web' });
+  // The custom domain serves the export at /, not the repository subpath.
+  assert.equal(appConfig.expo.experiments?.baseUrl, undefined);
   assert.deepEqual(appConfig.expo.plugins, ['expo-font', 'expo-asset']);
 });
 

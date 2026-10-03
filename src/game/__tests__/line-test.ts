@@ -52,12 +52,15 @@ describe('collapseLine', () => {
       [tile('first-pair', 4), tile('c', 2), null, null],
       [['a', 'b']],
     ],
-  ] as const)('merges the leading pair first for three equal tiles %#', (cells, expected, sources) => {
-    const result = collapseLine(cells, ids('first-pair'));
+  ] as const)(
+    'merges the leading pair first for three equal tiles %#',
+    (cells, expected, sources) => {
+      const result = collapseLine(cells, ids('first-pair'));
 
-    expect(result.cells).toEqual(expected);
-    expect(result.merges.map((merge) => merge.sourceIds)).toEqual(sources);
-  });
+      expect(result.cells).toEqual(expected);
+      expect(result.merges.map((merge) => merge.sourceIds)).toEqual(sources);
+    },
+  );
 
   it('reports an unchanged line without consuming an ID', () => {
     const result = collapseLine([tile('a', 2), tile('b', 4), null, null], {

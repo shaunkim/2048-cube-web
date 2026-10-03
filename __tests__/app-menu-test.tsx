@@ -1,13 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import { Linking, Platform } from 'react-native';
 
-jest.mock('../src/storage/platformStore', () => ({
-  platformStore: { getItem: async () => null, setItem: async () => undefined },
-}));
-
 import App from '../App';
 import type { IdSource, RandomSource, StoredDocumentV1 } from '../src/game/model';
 import type { KeyValueStore } from '../src/storage/gameStorage';
+
+jest.mock('../src/storage/platformStore', () => ({
+  platformStore: { getItem: async () => null, setItem: async () => undefined },
+}));
 
 const random: RandomSource = { next: () => 0 };
 let id = 0;
@@ -42,7 +42,7 @@ function storedRun(): StoredDocumentV1 {
 
 function dependencies(document?: StoredDocumentV1) {
   const store: KeyValueStore = {
-    getItem: async () => document ? JSON.stringify(document) : null,
+    getItem: async () => (document ? JSON.stringify(document) : null),
     setItem: async () => undefined,
   };
   return { store, random, ids, animationMs: 180 };
@@ -67,7 +67,9 @@ it('locks input in Menu and Tutorial, then resumes the unchanged run', async () 
   await waitFor(() => expect(screen.getByLabelText('SCORE 90')).toBeTruthy());
 
   fireEvent.press(screen.getAllByRole('button', { name: 'Menu' }).at(-1)!);
-  screen.getAllByRole('button', { name: /Move / }).forEach((button) => expect(button).toBeDisabled());
+  screen
+    .getAllByRole('button', { name: /Move / })
+    .forEach((button) => expect(button).toBeDisabled());
   fireEvent.press(screen.getByRole('button', { name: 'Tutorial' }));
   expect(screen.getByText('SWIPE IN SIX DIRECTIONS')).toBeTruthy();
   fireEvent.press(screen.getAllByRole('button', { name: 'Menu' }).at(-1)!);

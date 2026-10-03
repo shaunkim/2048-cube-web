@@ -4,7 +4,9 @@ import type { BoardState, GameState, ScoreRecords } from '../../game/model';
 import { GameHud } from '../GameHud';
 
 const board = (score: number, completed2048 = false, maximum = 0): BoardState => ({
-  cells: Array.from({ length: 16 }, (_, index) => index === 0 && maximum > 0 ? { id: `tile-${score}`, value: maximum } : null),
+  cells: Array.from({ length: 16 }, (_, index) =>
+    index === 0 && maximum > 0 ? { id: `tile-${score}`, value: maximum } : null,
+  ),
   score,
   completed2048,
   frozen: false,
@@ -42,7 +44,15 @@ function completedGame(maximum: number): GameState {
 }
 
 it('renders the web dashboard composition', () => {
-  render(<GameHud game={game(0)} messageCycle={0} records={records} onMenu={jest.fn()} onLeaderboard={jest.fn()} />);
+  render(
+    <GameHud
+      game={game(0)}
+      messageCycle={0}
+      records={records}
+      onMenu={jest.fn()}
+      onLeaderboard={jest.fn()}
+    />,
+  );
 
   expect(screen.getByTestId('standard-dashboard')).toBeTruthy();
 });
@@ -50,7 +60,15 @@ it('renders the web dashboard composition', () => {
 it('shows the classic brand, score cards, and primary actions without prototype controls', () => {
   const onMenu = jest.fn();
   const onLeaderboard = jest.fn();
-  render(<GameHud game={game(0)} messageCycle={0} records={records} onMenu={onMenu} onLeaderboard={onLeaderboard} />);
+  render(
+    <GameHud
+      game={game(0)}
+      messageCycle={0}
+      records={records}
+      onMenu={onMenu}
+      onLeaderboard={onLeaderboard}
+    />,
+  );
 
   expect(screen.getByText('2048³')).toBeTruthy();
   expect(screen.getByText('SCORE')).toBeTruthy();
@@ -71,7 +89,15 @@ it.each([
   [2, '×4'],
   [3, '×8'],
 ] as const)('shows the future-score multiplier after %i completed faces', (completed, copy) => {
-  render(<GameHud game={game(completed)} messageCycle={0} records={records} onMenu={jest.fn()} onLeaderboard={jest.fn()} />);
+  render(
+    <GameHud
+      game={game(completed)}
+      messageCycle={0}
+      records={records}
+      onMenu={jest.fn()}
+      onLeaderboard={jest.fn()}
+    />,
+  );
 
   if (copy === null) {
     expect(screen.queryByText(/×[1-4]/)).toBeNull();
@@ -85,7 +111,15 @@ it.each([
   [1, 'One face complete—two to go!'],
   [2, 'Two faces complete—finish the cube!'],
 ])('shows progress copy for %i completed faces', (completed, copy) => {
-  render(<GameHud game={game(completed)} messageCycle={0} records={records} onMenu={jest.fn()} onLeaderboard={jest.fn()} />);
+  render(
+    <GameHud
+      game={game(completed)}
+      messageCycle={0}
+      records={records}
+      onMenu={jest.fn()}
+      onLeaderboard={jest.fn()}
+    />,
+  );
   expect(screen.getByText(copy)).toBeTruthy();
 });
 
@@ -93,6 +127,14 @@ it.each([
   [2048, 'Cube complete! Your next goal is the 4096 tile!'],
   [4096, 'Cube complete! Your next goal is the 8192 tile!'],
 ])('advances the endless-play goal after all faces reach %i', (maximum, copy) => {
-  render(<GameHud game={completedGame(maximum)} messageCycle={0} records={records} onMenu={jest.fn()} onLeaderboard={jest.fn()} />);
+  render(
+    <GameHud
+      game={completedGame(maximum)}
+      messageCycle={0}
+      records={records}
+      onMenu={jest.fn()}
+      onLeaderboard={jest.fn()}
+    />,
+  );
   expect(screen.getByText(copy)).toBeTruthy();
 });

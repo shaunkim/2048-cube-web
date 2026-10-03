@@ -1,16 +1,21 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 
-jest.mock('../src/storage/platformStore', () => ({
-  platformStore: { getItem: async () => null, setItem: async () => undefined },
-}));
-
 import App from '../App';
 import type { BoardState, IdSource, RandomSource, StoredDocumentV1 } from '../src/game/model';
 import type { KeyValueStore } from '../src/storage/gameStorage';
 
+jest.mock('../src/storage/platformStore', () => ({
+  platformStore: { getItem: async () => null, setItem: async () => undefined },
+}));
+
 function deadBoard(prefix: string): BoardState {
   const values = [2, 4, 2, 4, 4, 2, 4, 2, 2, 4, 2, 4, 4, 2, 4, 2];
-  return { cells: values.map((value, index) => ({ id: `${prefix}-${index}`, value })), score: 100, completed2048: false, frozen: true };
+  return {
+    cells: values.map((value, index) => ({ id: `${prefix}-${index}`, value })),
+    score: 100,
+    completed2048: false,
+    frozen: true,
+  };
 }
 
 it('replaces an ended cube with results and starts over from Try Again', async () => {
@@ -28,7 +33,10 @@ it('replaces an ended cube with results and starts over from Try Again', async (
     records: { bestTotalScore: 900, bestFaceScores: { top: 300, left: 300, right: 300 } },
     preferences: { mode: 'continue' },
   };
-  const store: KeyValueStore = { getItem: async () => JSON.stringify(stored), setItem: async () => undefined };
+  const store: KeyValueStore = {
+    getItem: async () => JSON.stringify(stored),
+    setItem: async () => undefined,
+  };
   const random: RandomSource = { next: () => 0 };
   let id = 0;
   const ids: IdSource = { next: () => `retry-${++id}` };
