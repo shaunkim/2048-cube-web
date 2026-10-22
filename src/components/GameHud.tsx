@@ -23,10 +23,20 @@ function ScoreCard({
   readonly multiplier?: number | undefined;
 }) {
   return (
-    <View accessibilityLabel={`${label} ${value}${multiplier ? ` times ${multiplier}` : ''}`} style={styles.scoreCard}>
+    <View
+      accessibilityLabel={`${label} ${value}${multiplier ? ` times ${multiplier}` : ''}`}
+      style={styles.scoreCard}
+    >
       <Text style={styles.scoreLabel}>{label}</Text>
       <View style={styles.scoreValueRow}>
-        <Text adjustsFontSizeToFit minimumFontScale={0.7} numberOfLines={1} style={styles.scoreValue}>{value}</Text>
+        <Text
+          adjustsFontSizeToFit
+          minimumFontScale={0.7}
+          numberOfLines={1}
+          style={styles.scoreValue}
+        >
+          {value}
+        </Text>
         {multiplier && <Text style={styles.multiplier}>×{multiplier}</Text>}
       </View>
     </View>
@@ -68,7 +78,9 @@ export function GameHud({ game, messageCycle, records, onMenu, onLeaderboard }: 
     <View accessibilityRole="header" style={styles.container}>
       <View style={styles.headerRow}>
         <View accessibilityLabel="2048 cubed" style={styles.logo}>
-          <Text adjustsFontSizeToFit numberOfLines={1} style={styles.logoText}>2048³</Text>
+          <Text adjustsFontSizeToFit numberOfLines={1} style={styles.logoText}>
+            2048³
+          </Text>
         </View>
         <View testID="standard-dashboard" style={styles.dashboard}>
           <View style={styles.scoreRow}>
@@ -89,18 +101,86 @@ export function GameHud({ game, messageCycle, records, onMenu, onLeaderboard }: 
 const styles = StyleSheet.create({
   container: { gap: 18, maxWidth: 620, paddingHorizontal: 16, paddingTop: 12, width: '100%' },
   headerRow: { flexDirection: 'row', gap: 12 },
-  logo: { alignItems: 'center', backgroundColor: gameTheme.logo, borderRadius: 8, height: 112, justifyContent: 'center', width: 112 },
-  logoText: { color: gameTheme.lightText, fontFamily: gameTheme.fonts.bold, fontSize: 39, fontWeight: '800', letterSpacing: -2 },
+  logo: {
+    alignItems: 'center',
+    backgroundColor: gameTheme.logo,
+    borderRadius: 8,
+    height: 112,
+    justifyContent: 'center',
+    width: 112,
+  },
+  logoText: {
+    color: gameTheme.lightText,
+    fontFamily: gameTheme.fonts.bold,
+    fontSize: 39,
+    fontWeight: '800',
+    letterSpacing: -2,
+  },
   dashboard: { flex: 1, gap: 8 },
   scoreRow: { flex: 1, flexDirection: 'row', gap: 10 },
-  scoreCard: { alignItems: 'center', backgroundColor: gameTheme.board, borderRadius: 8, flex: 1, justifyContent: 'center', minWidth: 0, paddingHorizontal: 4 },
-  scoreLabel: { color: '#EEE9E1', fontFamily: gameTheme.fonts.bold, fontSize: 13, fontWeight: '800' },
-  scoreValue: { color: gameTheme.lightText, fontFamily: gameTheme.fonts.bold, fontSize: 27, fontWeight: '800', maxWidth: '100%' },
-  scoreValueRow: { alignItems: 'baseline', flexDirection: 'row', gap: 4, justifyContent: 'center', maxWidth: '100%' },
-  multiplier: { color: '#EEE9E1', fontFamily: gameTheme.fonts.bold, fontSize: 13, fontWeight: '800' },
+  scoreCard: {
+    alignItems: 'center',
+    backgroundColor: gameTheme.board,
+    borderRadius: 8,
+    flex: 1,
+    justifyContent: 'center',
+    minWidth: 0,
+    paddingHorizontal: 4,
+  },
+  scoreLabel: {
+    color: '#EEE9E1',
+    fontFamily: gameTheme.fonts.bold,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  scoreValue: {
+    color: gameTheme.lightText,
+    fontFamily: gameTheme.fonts.bold,
+    fontSize: 27,
+    fontWeight: '800',
+    maxWidth: '100%',
+  },
+  scoreValueRow: {
+    alignItems: 'baseline',
+    flexDirection: 'row',
+    gap: 4,
+    justifyContent: 'center',
+    maxWidth: '100%',
+  },
+  multiplier: {
+    color: '#EEE9E1',
+    fontFamily: gameTheme.fonts.bold,
+    fontSize: 13,
+    fontWeight: '800',
+  },
   actionRow: { flexDirection: 'row', gap: 10, height: 38 },
-  actionButton: { alignItems: 'center', backgroundColor: gameTheme.action, borderRadius: 8, flex: 1, justifyContent: 'center', minHeight: 44, paddingHorizontal: 4 },
-  actionText: { color: gameTheme.lightText, fontFamily: gameTheme.fonts.bold, fontSize: 13, fontWeight: '800' },
-  leaderboardText: { color: gameTheme.lightText, fontFamily: gameTheme.fonts.bold, fontSize: 12, fontWeight: '800', maxWidth: '100%' },
-  progress: { color: gameTheme.ink, fontFamily: gameTheme.fonts.bold, fontSize: 18, fontWeight: '800', lineHeight: 24 },
+  actionButton: {
+    alignItems: 'center',
+    backgroundColor: gameTheme.action,
+    borderRadius: 8,
+    flex: 1,
+    justifyContent: 'center',
+    minHeight: 44,
+    paddingHorizontal: 4,
+  },
+  actionText: {
+    color: gameTheme.lightText,
+    fontFamily: gameTheme.fonts.bold,
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  leaderboardText: {
+    color: gameTheme.lightText,
+    fontFamily: gameTheme.fonts.bold,
+    fontSize: 12,
+    fontWeight: '800',
+    maxWidth: '100%',
+  },
+  progress: {
+    color: gameTheme.ink,
+    fontFamily: gameTheme.fonts.bold,
+    fontSize: 18,
+    fontWeight: '800',
+    lineHeight: 24,
+  },
 });

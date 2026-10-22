@@ -11,9 +11,6 @@
       "output": "single",
       "favicon": "./assets/icon.png"
     },
-    "plugins": [
-      "expo-font",
-      "expo-asset"
-    ]
+    "plugins": ["expo-font", "expo-asset"]
   }
 }

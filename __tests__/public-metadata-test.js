@@ -17,7 +17,7 @@ test('publishes complete project, licensing, and attribution metadata', () => {
   const notices = read('THIRD_PARTY_NOTICES.md');
 
   for (const heading of [
-    '## 2048³',
+    '# 2048³',
     '## Play Online',
     '## Get the Game',
     '## How It Works',
@@ -28,7 +28,8 @@ test('publishes complete project, licensing, and attribution metadata', () => {
     '## Open Source / License',
     '## Acknowledgments',
     '## Why I Built This',
-  ]) assert.match(readme, new RegExp(heading.replace(/[³/]/g, '\\$&')));
+  ])
+    assert.match(readme, new RegExp(heading.replace(/[³/]/g, '\\$&')));
 
   for (const value of [
     'https://shaunkim.github.io/2048-cube-web/',
@@ -39,12 +40,26 @@ test('publishes complete project, licensing, and attribution metadata', () => {
     'npm ci',
     'npm run web',
     'npm run build:web',
-    'Q', 'W', 'E', 'A', 'S', 'D',
-    'Up-left', 'Up', 'Up-right', 'Down-left', 'Down', 'Down-right',
-    '×1', '×2', '×4', '×8',
+    'Q',
+    'W',
+    'E',
+    'A',
+    'S',
+    'D',
+    'Up-left',
+    'Up',
+    'Up-right',
+    'Down-left',
+    'Down',
+    'Down-right',
+    '×1',
+    '×2',
+    '×4',
+    '×8',
     'Gabriele Cirulli',
     'not affiliated with or endorsed by',
-  ]) assert.ok(readme.includes(value), `README must include ${value}`);
+  ])
+    assert.ok(readme.includes(value), `README must include ${value}`);
 
   assert.match(license, /^MIT License\n\nCopyright \(c\) 2026 Shaun Kim/m);
   assert.match(notices, /Clear Sans[\s\S]*Apache License, Version 2\.0/);
@@ -80,7 +95,8 @@ test('keeps the required public metadata files present', () => {
     '.github/ISSUE_TEMPLATE/bug_report.yml',
     '.github/ISSUE_TEMPLATE/feature_request.yml',
     '.github/ISSUE_TEMPLATE/config.yml',
-  ]) assert.equal(existsSync(resolve(root, relativePath)), true, `${relativePath} must exist`);
+  ])
+    assert.equal(existsSync(resolve(root, relativePath)), true, `${relativePath} must exist`);
 });
 
 test('publishes the approved build-tool security waiver and reporting policy', () => {
@@ -105,5 +121,6 @@ test('publishes the approved build-tool security waiver and reporting policy', (
     '@expo/config-plugins',
     'https://github.com/shaunkim/2048-cube-web/issues',
     'Do not include personal data',
-  ]) assert.ok(security.includes(value), `SECURITY.md must include ${value}`);
+  ])
+    assert.ok(security.includes(value), `SECURITY.md must include ${value}`);
 });

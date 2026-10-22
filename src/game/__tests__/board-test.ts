@@ -91,7 +91,9 @@ describe('independent board turns', () => {
   });
 
   it('distinguishes a full mergeable board from a dead board', () => {
-    const mergeable = board(Array.from({ length: 16 }, (_, index) => tile(`m${index}`, index < 2 ? 2 : 4)));
+    const mergeable = board(
+      Array.from({ length: 16 }, (_, index) => tile(`m${index}`, index < 2 ? 2 : 4)),
+    );
     const deadValues = [2, 4, 2, 4, 4, 2, 4, 2, 2, 4, 2, 4, 4, 2, 4, 2];
     const dead = board(deadValues.map((value, index) => tile(`d${index}`, value)));
 
@@ -112,15 +114,18 @@ describe('independent board turns', () => {
     ['right', 5, 7],
     ['up', 5, 1],
     ['down', 5, 13],
-  ] as const)('moves a tile %s using the local board orientation', (direction, start, destination) => {
-    const cells = emptyCells();
-    cells[start] = tile('moving', 2);
+  ] as const)(
+    'moves a tile %s using the local board orientation',
+    (direction, start, destination) => {
+      const cells = emptyCells();
+      cells[start] = tile('moving', 2);
 
-    const result = applyBoardMove(board(cells), direction, random(0, 0), ids('spawn'));
+      const result = applyBoardMove(board(cells), direction, random(0, 0), ids('spawn'));
 
-    expect(result.board.cells[destination]).toEqual(tile('moving', 2));
-    expect(result.changed).toBe(true);
-  });
+      expect(result.board.cells[destination]).toEqual(tile('moving', 2));
+      expect(result.changed).toBe(true);
+    },
+  );
 
   it.each([
     [0.899999, 2],

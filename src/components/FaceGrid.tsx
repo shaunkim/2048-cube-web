@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { G, Line, Path, Polygon, Text as SvgText } from 'react-native-svg';
 
 import type { BoardState, FaceId, FaceTurnEvent } from '../game/model';
@@ -24,7 +25,9 @@ interface FaceGridProps {
   readonly forceFullColor?: boolean;
 }
 
-export function FaceGrid({
+// The coordinator preserves an untouched board's identity. Skip its render when
+// only the other faces or menu state change; no SVG geometry cache is needed.
+export const FaceGrid = memo(function FaceGrid({
   face,
   board,
   event,
@@ -53,12 +56,30 @@ export function FaceGrid({
       {[1, 2, 3].map((row) => {
         const start = gridPoint(face, row, 0);
         const end = gridPoint(face, row, 4);
-        return <Line key={`row-${row}`} x1={start.x} y1={start.y} x2={end.x} y2={end.y} stroke={surface.grid} />;
+        return (
+          <Line
+            key={`row-${row}`}
+            x1={start.x}
+            y1={start.y}
+            x2={end.x}
+            y2={end.y}
+            stroke={surface.grid}
+          />
+        );
       })}
       {[1, 2, 3].map((column) => {
         const start = gridPoint(face, 0, column);
         const end = gridPoint(face, 4, column);
-        return <Line key={`column-${column}`} x1={start.x} y1={start.y} x2={end.x} y2={end.y} stroke={surface.grid} />;
+        return (
+          <Line
+            key={`column-${column}`}
+            x1={start.x}
+            y1={start.y}
+            x2={end.x}
+            y2={end.y}
+            stroke={surface.grid}
+          />
+        );
       })}
       {board.cells.map((cell, index) => {
         const row = Math.floor(index / 4);
@@ -70,24 +91,27 @@ export function FaceGrid({
         return (
           <G key={index}>
             <Path testID={`cell-${face}-${index}`} d={cellPath} fill="transparent" />
-            {cell && !movingTileIds.has(cell.id) && !mergeResultIds.has(cell.id) && cell.id !== spawnId && (
-              <>
-                <Path d={roundedPolygonPath(tilePolygon(face, row, column))} fill={style!.fill} />
-                <SvgText
-                  accessibilityLabel={String(cell.value)}
-                  x={center.x}
-                  y={center.y}
-                  fill={style!.text}
-                  fontFamily={gameTheme.fonts.bold}
-                  fontSize={style!.fontSize}
-                  fontWeight="700"
-                  textAnchor="middle"
-                  alignmentBaseline="middle"
-                >
-                  {cell.value}
-                </SvgText>
-              </>
-            )}
+            {cell &&
+              !movingTileIds.has(cell.id) &&
+              !mergeResultIds.has(cell.id) &&
+              cell.id !== spawnId && (
+                <>
+                  <Path d={roundedPolygonPath(tilePolygon(face, row, column))} fill={style!.fill} />
+                  <SvgText
+                    accessibilityLabel={String(cell.value)}
+                    x={center.x}
+                    y={center.y}
+                    fill={style!.text}
+                    fontFamily={gameTheme.fonts.bold}
+                    fontSize={style!.fontSize}
+                    fontWeight="700"
+                    textAnchor="middle"
+                    alignmentBaseline="middle"
+                  >
+                    {cell.value}
+                  </SvgText>
+                </>
+              )}
           </G>
         );
       })}
@@ -141,4 +165,4 @@ export function FaceGrid({
       {celebrateCompletion && <FaceCompletionPulse face={face} board={board} />}
     </G>
   );
-}
+});

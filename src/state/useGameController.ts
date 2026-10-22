@@ -1,10 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import {
-  applyGlobalMove,
-  normalizeSingleModeGame,
-  startGame,
-} from '../game/coordinator';
+import { applyGlobalMove, normalizeSingleModeGame, startGame } from '../game/coordinator';
 import type {
   GamePreferences,
   GameState,
@@ -15,11 +11,7 @@ import type {
   ScoreRecords,
   StoredDocumentV1,
 } from '../game/model';
-import {
-  mathRandomSource,
-  monotonicIdSource,
-  reservePersistedTileIds,
-} from '../game/runtime';
+import { mathRandomSource, monotonicIdSource, reservePersistedTileIds } from '../game/runtime';
 import {
   loadGameData,
   saveGameData,
@@ -68,14 +60,12 @@ function warnAboutStorage(error: unknown): void {
 export function useGameController(
   dependencies?: Partial<GameControllerDependencies>,
 ): GameControllerApi {
-  const [resolvedDependencies] = useState<GameControllerDependencies>(
-    () => ({
-      random: dependencies?.random ?? mathRandomSource,
-      ids: dependencies?.ids ?? monotonicIdSource,
-      store: dependencies?.store ?? platformStore,
-      animationMs: dependencies?.animationMs ?? 100,
-    }),
-  );
+  const [resolvedDependencies] = useState<GameControllerDependencies>(() => ({
+    random: dependencies?.random ?? mathRandomSource,
+    ids: dependencies?.ids ?? monotonicIdSource,
+    store: dependencies?.store ?? platformStore,
+    animationMs: dependencies?.animationMs ?? 100,
+  }));
 
   const [fallbackGame] = useState(() =>
     startGame('continue', resolvedDependencies.random, resolvedDependencies.ids),
@@ -99,13 +89,18 @@ export function useGameController(
   const celebrationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const writeQueueRef = useRef(Promise.resolve());
 
-  const save = useCallback((document: StoredDocumentV1): void => {
-    writeQueueRef.current = writeQueueRef.current
-      .then(() => saveGameData(resolvedDependencies.store, document))
-      .catch(warnAboutStorage);
-  }, [resolvedDependencies.store]);
+  const save = useCallback(
+    (document: StoredDocumentV1): void => {
+      // Preserve write order: a slower previous save must never overwrite a newer
+      // turn. Each queued document is an immutable snapshot of that turn.
+      writeQueueRef.current = writeQueueRef.current
+        .then(() => saveGameData(resolvedDependencies.store, document))
+        .catch(warnAboutStorage);
+    },
+    [resolvedDependencies.store],
+  );
 
-  const clearAnimationLock = (): void => {
+  const clearAnimationLock = useCallback((): void => {
     if (timerRef.current !== null) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
@@ -113,7 +108,7 @@ export function useGameController(
     lockedRef.current = false;
     setLocked(false);
     setAnimation(null);
-  };
+  }, []);
 
   useEffect(() => {
     let disposed = false;
@@ -154,63 +149,65 @@ export function useGameController(
     };
   }, [fallbackGame, resolvedDependencies.store, save]);
 
-  const move = (direction: GlobalDirection): void => {
-    if (!hydratedRef.current || lockedRef.current || gameRef.current.status === 'gameOver') return;
+  // Read refs at input time so multiple events in one render cannot spend the
+  // same turn twice. Stable callbacks also keep the keyboard effect attached.
+  const move = useCallback(
+    (direction: GlobalDirection): void => {
+      if (!hydratedRef.current || lockedRef.current || gameRef.current.status === 'gameOver')
+        return;
 
-    const result = applyGlobalMove(
-      gameRef.current,
-      direction,
-      resolvedDependencies.random,
-      resolvedDependencies.ids,
-    );
-    if (!result.changed) {
-      invalidMoveCountRef.current += 1;
-      setInvalidMoveCount(invalidMoveCountRef.current);
-      return;
-    }
+      const result = applyGlobalMove(
+        gameRef.current,
+        direction,
+        resolvedDependencies.random,
+        resolvedDependencies.ids,
+      );
+      if (!result.changed) {
+        invalidMoveCountRef.current += 1;
+        setInvalidMoveCount(invalidMoveCountRef.current);
+        return;
+      }
 
-    const nextRecords = updateScoreRecords(recordsRef.current, result.state);
-    const document: StoredDocumentV1 = {
-      version: 1,
-      activeRun: result.state,
-      records: nextRecords,
-      preferences: preferencesRef.current,
-    };
+      const nextRecords = updateScoreRecords(recordsRef.current, result.state);
+      const document: StoredDocumentV1 = {
+        version: 1,
+        activeRun: result.state,
+        records: nextRecords,
+        preferences: preferencesRef.current,
+      };
 
-    gameRef.current = result.state;
-    recordsRef.current = nextRecords;
-    lockedRef.current = true;
-    setGame(result.state);
-    setRecords(nextRecords);
-    setAnimation(result);
-    setLocked(true);
-    save(document);
+      gameRef.current = result.state;
+      recordsRef.current = nextRecords;
+      lockedRef.current = true;
+      setGame(result.state);
+      setRecords(nextRecords);
+      setAnimation(result);
+      setLocked(true);
+      save(document);
 
-    if (result.completedFacesStarted.length > 0) {
-      if (celebrationTimerRef.current !== null) clearTimeout(celebrationTimerRef.current);
-      setCelebration(result);
-      celebrationTimerRef.current = setTimeout(() => {
-        celebrationTimerRef.current = null;
-        setCelebration(null);
-      }, FACE_COMPLETION_CELEBRATION_MS);
-    }
+      if (result.completedFacesStarted.length > 0) {
+        if (celebrationTimerRef.current !== null) clearTimeout(celebrationTimerRef.current);
+        setCelebration(result);
+        celebrationTimerRef.current = setTimeout(() => {
+          celebrationTimerRef.current = null;
+          setCelebration(null);
+        }, FACE_COMPLETION_CELEBRATION_MS);
+      }
 
-    timerRef.current = setTimeout(() => {
-      timerRef.current = null;
-      lockedRef.current = false;
-      setAnimation(null);
-      setLocked(false);
-    }, resolvedDependencies.animationMs);
-  };
+      timerRef.current = setTimeout(() => {
+        timerRef.current = null;
+        lockedRef.current = false;
+        setAnimation(null);
+        setLocked(false);
+      }, resolvedDependencies.animationMs);
+    },
+    [resolvedDependencies, save],
+  );
 
-  const restart = (): void => {
+  const restart = useCallback((): void => {
     if (!hydratedRef.current) return;
 
-    const nextGame = startGame(
-      'continue',
-      resolvedDependencies.random,
-      resolvedDependencies.ids,
-    );
+    const nextGame = startGame('continue', resolvedDependencies.random, resolvedDependencies.ids);
     const document: StoredDocumentV1 = {
       version: 1,
       activeRun: nextGame,
@@ -229,7 +226,7 @@ export function useGameController(
     setGame(nextGame);
     setInvalidMoveCount(0);
     save(document);
-  };
+  }, [clearAnimationLock, resolvedDependencies, save]);
 
   return {
     game,

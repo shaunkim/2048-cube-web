@@ -14,6 +14,8 @@ import type {
   ScoreMultiplier,
 } from './model';
 
+// Screen-space swipes map to two independent board-space moves. Tiles never
+// cross an edge, so keep projection geometry out of the rules engine.
 export const DIRECTION_TARGETS = {
   up: [
     { face: 'left', direction: 'up' },
@@ -54,7 +56,7 @@ export function completedFaceCount(faces: GameState['faces']): number {
 }
 
 export function scoreMultiplierFor(faces: GameState['faces']): ScoreMultiplier {
-  return 2 ** completedFaceCount(faces) as ScoreMultiplier;
+  return (2 ** completedFaceCount(faces)) as ScoreMultiplier;
 }
 
 function faceEvents(
@@ -71,9 +73,7 @@ function faceEvents(
   }));
 }
 
-function withFrozenDeadFaces(
-  faces: GameState['faces'],
-): Readonly<Record<FaceId, BoardState>> {
+function withFrozenDeadFaces(faces: GameState['faces']): Readonly<Record<FaceId, BoardState>> {
   let nextFaces = faces;
 
   for (const face of FACE_IDS) {
@@ -127,6 +127,8 @@ export function applyGlobalMove(
     };
   }
 
+  // Take the multiplier before this turn. Reaching 2048 rewards future merges,
+  // including on the other face, without retroactively multiplying this move.
   const scoreMultiplier = scoreMultiplierFor(state.faces);
   const faces = faceEvents(state, direction, random, ids, scoreMultiplier);
   const completedFacesStarted = faces

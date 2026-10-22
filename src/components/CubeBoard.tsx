@@ -29,9 +29,27 @@ export function CubeBoard({
       viewBox={`${DEFAULT_CUBE_VIEWPORT.minX} ${DEFAULT_CUBE_VIEWPORT.minY} ${DEFAULT_CUBE_VIEWPORT.width} ${DEFAULT_CUBE_VIEWPORT.height}`}
       preserveAspectRatio="xMidYMid meet"
     >
-      <FaceGrid face="top" board={state.faces.top} event={eventFor(animation, 'top')} celebrationEvent={eventFor(celebration, 'top')} forceFullColor={forceFullColor} />
-      <FaceGrid face="left" board={state.faces.left} event={eventFor(animation, 'left')} celebrationEvent={eventFor(celebration, 'left')} forceFullColor={forceFullColor} />
-      <FaceGrid face="right" board={state.faces.right} event={eventFor(animation, 'right')} celebrationEvent={eventFor(celebration, 'right')} forceFullColor={forceFullColor} />
+      <FaceGrid
+        face="top"
+        board={state.faces.top}
+        event={eventFor(animation, 'top')}
+        celebrationEvent={eventFor(celebration, 'top')}
+        forceFullColor={forceFullColor}
+      />
+      <FaceGrid
+        face="left"
+        board={state.faces.left}
+        event={eventFor(animation, 'left')}
+        celebrationEvent={eventFor(celebration, 'left')}
+        forceFullColor={forceFullColor}
+      />
+      <FaceGrid
+        face="right"
+        board={state.faces.right}
+        event={eventFor(animation, 'right')}
+        celebrationEvent={eventFor(celebration, 'right')}
+        forceFullColor={forceFullColor}
+      />
     </Svg>
   );
 }

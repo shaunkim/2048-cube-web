@@ -14,12 +14,18 @@ test('publishes the web export only when the repository is public', () => {
   assert.match(workflow, /^on:\n  push:\n    branches: \[main\]\n  workflow_dispatch:/m);
   assert.match(workflow, /^permissions:\n  contents: read\n  pages: write\n  id-token: write/m);
   assert.match(workflow, /^  build:\n    if: github\.event\.repository\.private == false/m);
-  assert.match(workflow, /^  deploy:\n    if: github\.event\.repository\.private == false\n    needs: build/m);
+  assert.match(
+    workflow,
+    /^  deploy:\n    if: github\.event\.repository\.private == false\n    needs: build/m,
+  );
   assert.match(workflow, /actions\/checkout@v6/);
-  assert.match(workflow, /uses: actions\/configure-pages@v5\n        with:\n          enablement: true/);
+  assert.match(
+    workflow,
+    /uses: actions\/configure-pages@v5\n        with:\n          enablement: true/,
+  );
   assert.match(workflow, /actions\/upload-pages-artifact@v4/);
   assert.match(workflow, /actions\/deploy-pages@v4/);
-  assert.match(workflow, /node-version: 20/);
+  assert.match(workflow, /node-version: 22/);
   assert.match(workflow, /npm ci/);
   assert.match(workflow, /npm run build:web/);
   assert.match(workflow, /path: dist/);

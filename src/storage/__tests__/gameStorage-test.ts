@@ -148,10 +148,7 @@ it.each([
 ])('rejects duplicate tile IDs %s across the active run', async (_description, invalidRun) => {
   const fallback = validFixtureGame();
 
-  const loaded = await loadGameData(
-    memoryStore(serializedWithInvalidRun(invalidRun)),
-    fallback,
-  );
+  const loaded = await loadGameData(memoryStore(serializedWithInvalidRun(invalidRun)), fallback);
 
   expect(loaded.activeRun).toEqual(fallback);
   expect(loaded.records.bestTotalScore).toBe(99);
@@ -202,10 +199,7 @@ it('rejects a current 2048 tile whose face is not marked completed', async () =>
   const fallback = validFixtureGame();
   const impossibleRun = withTopTile(fallback, 2048, false);
 
-  const loaded = await loadGameData(
-    memoryStore(serializedWithInvalidRun(impossibleRun)),
-    fallback,
-  );
+  const loaded = await loadGameData(memoryStore(serializedWithInvalidRun(impossibleRun)), fallback);
 
   expect(loaded.activeRun).toEqual(fallback);
 });
@@ -258,10 +252,7 @@ it.each([
     'a non-power-of-two tile',
     withCells(validFixtureGame(), [tile('odd', 3), ...Array.from({ length: 15 }, () => null)]),
   ],
-  [
-    'a large non-power-of-two tile',
-    withTopTile(validFixtureGame(), 4294967297, true),
-  ],
+  ['a large non-power-of-two tile', withTopTile(validFixtureGame(), 4294967297, true)],
   [
     'a negative score',
     {
@@ -275,7 +266,10 @@ it.each([
     'a strict frozen face',
     {
       ...validFixtureGame(),
-      faces: { ...validFixtureGame().faces, top: { ...validFixtureGame().faces.top, frozen: true } },
+      faces: {
+        ...validFixtureGame().faces,
+        top: { ...validFixtureGame().faces.top, frozen: true },
+      },
     },
   ],
   [
@@ -283,7 +277,10 @@ it.each([
     {
       ...validFixtureGame(),
       mode: 'continue',
-      faces: { ...validFixtureGame().faces, top: { ...validFixtureGame().faces.top, frozen: true } },
+      faces: {
+        ...validFixtureGame().faces,
+        top: { ...validFixtureGame().faces.top, frozen: true },
+      },
     },
   ],
   ['a strict playing run with a dead face', withDeadTopBoard(validFixtureGame())],
@@ -292,16 +289,19 @@ it.each([
     'a continue dead-but-unfrozen face',
     { ...withDeadTopBoard(validFixtureGame()), mode: 'continue' },
   ],
-])('recovers from %s without discarding valid independent sections', async (_description, invalidRun) => {
-  const fallback = validFixtureGame();
+])(
+  'recovers from %s without discarding valid independent sections',
+  async (_description, invalidRun) => {
+    const fallback = validFixtureGame();
 
-  const loaded = await loadGameData(memoryStore(serializedWithInvalidRun(invalidRun)), fallback);
+    const loaded = await loadGameData(memoryStore(serializedWithInvalidRun(invalidRun)), fallback);
 
-  expect(loaded.activeRun).toEqual(fallback);
-  expect(loaded.records.bestTotalScore).toBe(99);
-  expect(loaded.records.bestFaceScores).toEqual({ top: 10, left: 20, right: 30 });
-  expect(loaded.preferences).toEqual({ mode: 'continue' });
-});
+    expect(loaded.activeRun).toEqual(fallback);
+    expect(loaded.records.bestTotalScore).toBe(99);
+    expect(loaded.records.bestFaceScores).toEqual({ top: 10, left: 20, right: 30 });
+    expect(loaded.preferences).toEqual({ mode: 'continue' });
+  },
+);
 
 it.each([
   ['invalid JSON', '{', 'malformed JSON'],
@@ -338,27 +338,24 @@ it.each([
     { bestTotalScore: 10, bestFaceScores: { top: 1, left: 2, right: 3 } },
     { mode: 'continue' },
   ],
-])('defaults %s without discarding other valid sections', async (
-  _description,
-  records,
-  preferences,
-  expectedRecords,
-  expectedPreferences,
-) => {
-  const game = validFixtureGame();
-  const stored = JSON.stringify({
-    version: 1,
-    activeRun: game,
-    records,
-    preferences,
-  });
+])(
+  'defaults %s without discarding other valid sections',
+  async (_description, records, preferences, expectedRecords, expectedPreferences) => {
+    const game = validFixtureGame();
+    const stored = JSON.stringify({
+      version: 1,
+      activeRun: game,
+      records,
+      preferences,
+    });
 
-  const loaded = await loadGameData(memoryStore(stored), game);
+    const loaded = await loadGameData(memoryStore(stored), game);
 
-  expect(loaded.activeRun).toEqual(game);
-  expect(loaded.records).toEqual(expectedRecords);
-  expect(loaded.preferences).toEqual(expectedPreferences);
-});
+    expect(loaded.activeRun).toEqual(game);
+    expect(loaded.records).toEqual(expectedRecords);
+    expect(loaded.preferences).toEqual(expectedPreferences);
+  },
+);
 
 it('retains the highest total and per-face score records', () => {
   const game = {

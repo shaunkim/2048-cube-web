@@ -3,13 +3,7 @@ export const CELL_COUNT = BOARD_SIZE * BOARD_SIZE;
 
 export type FaceId = 'top' | 'left' | 'right';
 export type LocalDirection = 'up' | 'down' | 'left' | 'right';
-export type GlobalDirection =
-  | 'up'
-  | 'down'
-  | 'upLeft'
-  | 'downRight'
-  | 'upRight'
-  | 'downLeft';
+export type GlobalDirection = 'up' | 'down' | 'upLeft' | 'downRight' | 'upRight' | 'downLeft';
 
 export interface Tile {
   readonly id: string;

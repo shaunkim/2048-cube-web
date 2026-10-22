@@ -23,30 +23,27 @@ export function useDirectionalInput(
   locked: boolean,
 ): PanResponderInstance['panHandlers'] {
   const dispatchGuard = useMemo(() => new GestureDispatchGuard(), []);
-  const responder = useMemo(
-    () => {
-      return PanResponder.create({
-        onMoveShouldSetPanResponder: () => true,
-        onPanResponderGrant: () => {
-          dispatchGuard.reset();
-        },
-        onPanResponderMove: (_event, gesture) => {
-          if (locked) return;
-          const direction = classifySwipe(gesture.dx, gesture.dy);
-          if (!direction) return;
-          if (!dispatchGuard.claim()) return;
-          onDirection(direction);
-        },
-        onPanResponderRelease: () => {
-          dispatchGuard.reset();
-        },
-        onPanResponderTerminate: () => {
-          dispatchGuard.reset();
-        },
-      });
-    },
-    [dispatchGuard, locked, onDirection],
-  );
+  const responder = useMemo(() => {
+    return PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        dispatchGuard.reset();
+      },
+      onPanResponderMove: (_event, gesture) => {
+        if (locked) return;
+        const direction = classifySwipe(gesture.dx, gesture.dy);
+        if (!direction) return;
+        if (!dispatchGuard.claim()) return;
+        onDirection(direction);
+      },
+      onPanResponderRelease: () => {
+        dispatchGuard.reset();
+      },
+      onPanResponderTerminate: () => {
+        dispatchGuard.reset();
+      },
+    });
+  }, [dispatchGuard, locked, onDirection]);
 
   useEffect(() => {
     if (Platform.OS !== 'web' || typeof window === 'undefined') return;
