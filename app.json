@@ -6,6 +6,9 @@
     "icon": "./assets/icon.png",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
+    "experiments": {
+      "baseUrl": "/2048-cube-web"
+    },
     "web": {
       "bundler": "metro",
       "output": "single",
