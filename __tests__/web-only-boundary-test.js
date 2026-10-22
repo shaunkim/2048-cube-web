@@ -103,8 +103,7 @@ test('exposes only the web build surface', () => {
     output: 'single',
     favicon: appConfig.expo.icon,
   });
-  // The custom domain serves the export at /, not the repository subpath.
-  assert.equal(appConfig.expo.experiments?.baseUrl, undefined);
+  assert.equal(appConfig.expo.experiments?.baseUrl, '/2048-cube-web');
   assert.deepEqual(appConfig.expo.plugins, ['expo-font', 'expo-asset']);
 });
 
