@@ -1,15 +1,15 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { Linking } from 'react-native';
 
-import { DESTINATIONS, SOURCE_URL, WebFooter } from '../WebFooter';
+import { DESTINATIONS, GOOGLE_PLAY_URL, SOURCE_URL, WebFooter } from '../WebFooter';
 
-it('shows three favicon-only destinations with live GitHub and App Store links', () => {
+it('shows three favicon-only destinations with live store links', () => {
   render(<WebFooter />);
 
   expect(screen.getByRole('link', { name: 'GitHub repository' })).toBeTruthy();
   expect(screen.getByRole('link', { name: 'App Store' })).toBeTruthy();
-  expect(screen.queryByRole('link', { name: 'Google Play' })).toBeNull();
-  expect(screen.getByText('<>')).toBeTruthy();
+  expect(screen.getByRole('link', { name: 'Google Play' })).toBeTruthy();
+  expect(screen.getByText('</>')).toBeTruthy();
   expect(screen.getByText('')).toBeTruthy();
   expect(screen.getByText('▶')).toBeTruthy();
   expect(screen.queryByText('GitHub')).toBeNull();
@@ -18,17 +18,19 @@ it('shows three favicon-only destinations with live GitHub and App Store links',
   expect(screen.queryByText('Coming soon')).toBeNull();
 });
 
-it('opens the live GitHub and App Store destinations when pressed', () => {
+it('opens all three live destinations when pressed', () => {
   const openUrl = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
 
   render(<WebFooter />);
 
   fireEvent.press(screen.getByRole('link', { name: 'GitHub repository' }));
   fireEvent.press(screen.getByRole('link', { name: 'App Store' }));
+  fireEvent.press(screen.getByRole('link', { name: 'Google Play' }));
 
-  expect(openUrl).toHaveBeenCalledTimes(2);
+  expect(openUrl).toHaveBeenCalledTimes(3);
   expect(openUrl).toHaveBeenCalledWith(SOURCE_URL);
   expect(openUrl).toHaveBeenCalledWith('https://apps.apple.com/us/app/2048/id6803536487');
+  expect(openUrl).toHaveBeenCalledWith(GOOGLE_PLAY_URL);
   openUrl.mockRestore();
 });
 

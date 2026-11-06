@@ -18,12 +18,13 @@ export type FooterDestinations = Readonly<{
 
 export const SOURCE_URL = 'https://github.com/shaunkim/2048-cube-web';
 export const APP_STORE_URL = 'https://apps.apple.com/us/app/2048/id6803536487';
+export const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.shaunkim.game2048cube&pli=1';
 
 export const DESTINATIONS = {
   github: {
     label: 'GitHub',
     accessibilityLabel: 'GitHub repository',
-    mark: '<>',
+    mark: '</>',
     url: SOURCE_URL,
   },
   appStore: {
@@ -34,7 +35,7 @@ export const DESTINATIONS = {
   googlePlay: {
     label: 'Google Play',
     mark: '▶',
-    url: null,
+    url: GOOGLE_PLAY_URL,
   },
 } as const satisfies FooterDestinations;
 

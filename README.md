@@ -13,7 +13,7 @@ Play at [shaunkim.github.io/2048-cube-web](https://shaunkim.github.io/2048-cube-
 
 - [GitHub repository](https://github.com/shaunkim/2048-cube-web)
 - [App Store](https://apps.apple.com/us/app/2048/id6803536487)
-- Google Play — Coming soon
+- [Google Play](https://play.google.com/store/apps/details?id=com.shaunkim.game2048cube&pli=1)
 
 ## How It Works
 
