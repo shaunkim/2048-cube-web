@@ -27,7 +27,7 @@
     "lint": "expo lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "build:web": "expo export --platform web"
+    "build:web": "expo export --platform web && node scripts/inject-web-analytics.mjs"
   },
   "dependencies": {
     "expo": "~57.0.15",

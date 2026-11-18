@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>2048³</title>
+    <style id="expo-reset">
+      html, body { height: 100%; }
+      body { overflow: hidden; }
+      #root { display: flex; height: 100%; flex: 1; }
+    </style>
+    <!-- GTM is installed only in this web app; native iOS/Android builds do not load it. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+      (function (w, d, s, l, i) {
+        var firstScript = d.getElementsByTagName(s)[0];
+        var script = d.createElement(s);
+        var layerQuery = l !== 'dataLayer' ? '&l=' + l : '';
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + layerQuery;
+        firstScript.parentNode.insertBefore(script, firstScript);
+      })(window, document, 'script', 'dataLayer', 'GTM-5MJCVRSG');
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5MJCVRSG"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <div id="root"></div>
+  </body>
+</html>
