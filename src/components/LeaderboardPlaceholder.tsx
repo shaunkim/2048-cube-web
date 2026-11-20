@@ -1,4 +1,4 @@
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Linking, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { gameTheme } from '../theme/gameTheme';
 
@@ -22,6 +22,29 @@ export function LeaderboardPlaceholder({ visible, onClose }: LeaderboardPlacehol
           <Text style={styles.body}>
             The web leaderboard will open when its separate score service is ready.
           </Text>
+          <Text style={styles.mobileNote}>Leaderboard is available on both mobile platforms.</Text>
+          <View style={styles.storeLinks}>
+            <Pressable
+              accessibilityRole="link"
+              accessibilityLabel="App Store"
+              onPress={() =>
+                void Linking.openURL('https://apps.apple.com/us/app/2048/id6803536487')
+              }
+            >
+              <Text style={styles.link}>APP STORE</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="link"
+              accessibilityLabel="Google Play"
+              onPress={() =>
+                void Linking.openURL(
+                  'https://play.google.com/store/apps/details?id=com.shaunkim.game2048cube',
+                )
+              }
+            >
+              <Text style={styles.link}>GOOGLE PLAY</Text>
+            </Pressable>
+          </View>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Close leaderboard"
@@ -63,6 +86,19 @@ const styles = StyleSheet.create({
     fontFamily: gameTheme.fonts.regular,
     fontSize: 15,
     lineHeight: 21,
+  },
+  mobileNote: {
+    color: gameTheme.ink,
+    fontFamily: gameTheme.fonts.medium,
+    fontSize: 15,
+    lineHeight: 21,
+  },
+  storeLinks: { flexDirection: 'row', justifyContent: 'space-around', paddingVertical: 4 },
+  link: {
+    color: gameTheme.ink,
+    fontFamily: gameTheme.fonts.bold,
+    fontSize: 14,
+    textDecorationLine: 'underline',
   },
   button: {
     alignItems: 'center',

@@ -35,8 +35,10 @@ const PUBLIC_TOP_LEVEL_ENTRIES = [
   'jest.setup.js',
   'package-lock.json',
   'package.json',
+  'scripts',
   'src',
   'tsconfig.json',
+  'web',
 ];
 
 function projectPath(relativePath) {
