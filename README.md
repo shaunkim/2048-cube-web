@@ -66,18 +66,6 @@ Create a production web export with:
 npm run build:web
 ```
 
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for checks and pull requests, and
-[the architecture guide](docs/architecture.md) for the game, rendering, and storage boundaries.
-
-```bash
-npm test -- --runInBand
-npm run typecheck
-npm run lint
-npm run format:check
-```
-
 ## Feedback / Support
 
 Please report browser problems or suggest gameplay ideas through [GitHub Issues](https://github.com/shaunkim/2048-cube-web/issues).
