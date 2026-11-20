@@ -86,8 +86,6 @@ This project was built with help from Codex.
 
 I am an aerospace engineer, and extending two-dimensional data into three dimensions is part of my work as a CFD engineer. The idea for 2048³ came to me when I first played 2048, but I did not know how to program it into reality. As a small side project, AI-assisted coding finally gave me a way to build and share it.
 
-I've always loved the simplicity of the original 2048. I wanted to preserve that same feeling—minimal animations, no sound effects, and just the pure joy (and frustration) of solving a deceptively difficult puzzle.
+I've always loved the simplicity of the original 2048. I tried my best to keep it the same way; minimal animations, no sound effects, and just the pure joy (and frustration) of solving an impossibly difficult puzzle.
 
-A little confession: even as the developer, I've only managed to reach 2048 on **one face** so far. When you reach it, the tiles on that face pop slightly. Debugging that little celebration took me forever because actually reaching 2048 was already so challenging!
-
-Each face that reaches 2048 doubles the points you earn from then on: 2×, 4×, and finally 8× if you complete all three. And just like the original, you can keep playing after reaching 2048 to chase higher scores.
+A little confession: even as the developer, I've only managed to reach 2048 on **one face** so far. When you reach it, the tiles on that face pop slightly. Debugging that little celebration took me forever because actually reaching 2048 was already so challenging. Each face that reaches 2048 doubles the points you earn from then on: 2x, 4x, and finally 8x if you complete all three. And just like the original, you can keep playing after reaching 2048 to chase higher scores.
