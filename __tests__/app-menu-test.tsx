@@ -122,6 +122,6 @@ it('still opens the leaderboard placeholder', async () => {
   const view = render(<App controllerDependencies={dependencies()} />);
   await waitFor(() => expect(screen.getByText('2048³')).toBeTruthy());
   fireEvent.press(screen.getByRole('button', { name: 'Leaderboard' }));
-  expect(screen.getByText('Leaderboard coming soon')).toBeTruthy();
+  expect(screen.getByText('Leaderboards are only available on iOS and Android.')).toBeTruthy();
   view.unmount();
 });

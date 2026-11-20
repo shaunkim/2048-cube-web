@@ -3,13 +3,13 @@ import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { LeaderboardPlaceholder } from '../LeaderboardPlaceholder';
 
-it('offers app store links while explaining that web leaderboard is not live', () => {
+it('offers store links and explains that leaderboards are mobile-only', () => {
   const onClose = jest.fn();
   const openURL = jest.spyOn(Linking, 'openURL').mockResolvedValue(undefined as never);
   render(<LeaderboardPlaceholder visible onClose={onClose} />);
 
-  expect(screen.getByText('Leaderboard coming soon')).toBeTruthy();
-  expect(screen.getByText('Leaderboard is available on both mobile platforms.')).toBeTruthy();
+  expect(screen.getByText('Leaderboards are only available on iOS and Android.')).toBeTruthy();
+  expect(screen.queryByText(/coming soon/i)).toBeNull();
   fireEvent.press(screen.getByRole('link', { name: 'App Store' }));
   fireEvent.press(screen.getByRole('link', { name: 'Google Play' }));
   expect(openURL).toHaveBeenNthCalledWith(1, 'https://apps.apple.com/us/app/2048/id6803536487');

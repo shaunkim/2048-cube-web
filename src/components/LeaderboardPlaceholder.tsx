@@ -18,11 +18,8 @@ export function LeaderboardPlaceholder({ visible, onClose }: LeaderboardPlacehol
           role="dialog"
           style={styles.sheet}
         >
-          <Text style={styles.heading}>Leaderboard coming soon</Text>
-          <Text style={styles.body}>
-            The web leaderboard will open when its separate score service is ready.
-          </Text>
-          <Text style={styles.mobileNote}>Leaderboard is available on both mobile platforms.</Text>
+          <Text style={styles.heading}>Leaderboard</Text>
+          <Text style={styles.body}>Leaderboards are only available on iOS and Android.</Text>
           <View style={styles.storeLinks}>
             <Pressable
               accessibilityRole="link"
@@ -84,12 +81,6 @@ const styles = StyleSheet.create({
   body: {
     color: gameTheme.mutedInk,
     fontFamily: gameTheme.fonts.regular,
-    fontSize: 15,
-    lineHeight: 21,
-  },
-  mobileNote: {
-    color: gameTheme.ink,
-    fontFamily: gameTheme.fonts.medium,
     fontSize: 15,
     lineHeight: 21,
   },
