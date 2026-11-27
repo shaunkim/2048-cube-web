@@ -29,6 +29,16 @@
         flex-shrink: 1;
         min-height: 0;
       }
+      @media (max-height: 560px) {
+        #root [data-testid='game-hud'] {
+          gap: 8px;
+          padding-top: 8px;
+        }
+        #root [data-testid='game-logo'] {
+          height: 90px;
+          width: 90px;
+        }
+      }
     </style>
     <!-- GTM is installed only in this web app; native iOS/Android builds do not load it. -->
     <script>

@@ -75,9 +75,9 @@ export function GameHud({ game, messageCycle, records, onMenu, onLeaderboard }: 
   const scoreMultiplier = scoreMultiplierFor(game.faces);
   const visibleMultiplier = scoreMultiplier > 1 ? scoreMultiplier : undefined;
   return (
-    <View accessibilityRole="header" style={styles.container}>
+    <View accessibilityRole="header" testID="game-hud" style={styles.container}>
       <View style={styles.headerRow}>
-        <View accessibilityLabel="2048 cubed" style={styles.logo}>
+        <View accessibilityLabel="2048 cubed" testID="game-logo" style={styles.logo}>
           <Text adjustsFontSizeToFit numberOfLines={1} style={styles.logoText}>
             2048³
           </Text>
