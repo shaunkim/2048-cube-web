@@ -19,6 +19,17 @@
         flex: 1;
       }
     </style>
+    <style id="game-gestures">
+      html,
+      body {
+        overscroll-behavior: none;
+      }
+      [data-testid='cube-stage'] {
+        touch-action: pinch-zoom;
+        flex-shrink: 1;
+        min-height: 0;
+      }
+    </style>
     <!-- GTM is installed only in this web app; native iOS/Android builds do not load it. -->
     <script>
       window.dataLayer = window.dataLayer || [];
