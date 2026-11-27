@@ -7,7 +7,7 @@
 
 ## Play Online
 
-Play at [shaunkim.github.io/2048-cube-web](https://shaunkim.github.io/2048-cube-web/).
+Play at [2048.lunaandsol.org](https://2048.lunaandsol.org/). The original [GitHub Pages URL](https://shaunkim.github.io/2048-cube-web/) remains available too.
 
 ## Get the Game
 
